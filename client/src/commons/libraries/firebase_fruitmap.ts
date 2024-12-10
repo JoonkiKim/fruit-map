@@ -10,7 +10,7 @@ const firebaseConfig = {
   projectId: "qkjk-fruitmap",
   storageBucket: "qkjk-fruitmap.firebasestorage.app",
   messagingSenderId: "393838753860",
-  appId: "1:393838753860:web:b54af73d79362c85be6411"
+  appId: "1:393838753860:web:b54af73d79362c85be6411",
 };
 
 // Initialize Firebase
