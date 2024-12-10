@@ -1,6 +1,6 @@
 // 모든 페이지에서 사용하는 공통 설정들을 여기서 한다
 
-import AppProps from "next/app";
+import type { AppProps } from "next/app";
 import ApolloSetting from "../src/components/commons/layout/apollo";
 import { Global } from "@emotion/react";
 import { globalStyles } from "../src/commons/styles/globalStyles";
