@@ -1,6 +1,11 @@
 // 파이어베이스 서버에 데이터를 등록하는 방법! -> 나중에는 프로덕션 모드로 하기
 
-import { collection, addDoc, getDocs, getFirestore } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  getFirestore,
+} from "firebase/firestore/lite";
 import { firebasefruitapp } from "../../src/commons/libraries/firebase_fruitmap";
 import {
   wrapAsync,
