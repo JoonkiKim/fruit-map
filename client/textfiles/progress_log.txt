@@ -1,3 +1,48 @@
+12/11
+상황정리: 
+OK 정적 웹 호스팅 주소로 들어가면 , 카카오지도 로딩자체가 안됨 => 왜냐면 도메인 연결이 안되었으니까!
+
+만약에 https://kjkniceflag.com/fruitsmap은 ssr로 연결되어서 단순 https://kjkniceflag.com랑 갖고 있는 코드가 다르다면..?(단순도메인은 out폴더를 최신거로 갖고 있고, 지도 페이지는 옛날거로 갖고 있다)
+
+- 그냥 https://kjkniceflag.com 만 들어가면 _ssgManifest.js가 정상 작동함
+- https://kjkniceflag.com/fruitsmap에 들어가면 _ssgManifest.js가 작동안함
+=> 이때 https://kjkniceflag.com/fruitsmap랑 https://kjkniceflag.com이랑 static아래쪽 폴더 이름이 다르다
+
+1. 이게 왜 발생하는 에러인지 알아보기
+out폴더에서의 구조가 다르다 -> s3의 폴더 구조에는 이름이 a5YrWAX9EU0hDXAJ3Rrxq인데, GET https://kjkniceflag.com/_next/static/kAa-5IsBuFSYEnMREXY2h/_buildManifest.js net::ERR_ABORTED 403 (Forbidden) 이 에러에는 폴더 이름이 kAa-5IsBuFSYEnMREXY2h로 되어있다
+=> 인강에서 어떻게 하라고 한게 있었는데 모르겠다. 이 경우 어떻게 해결해야하는지 확인해보자
+
+       GET https://kjkniceflag.com/_next/static/kAa-5IsBuFSYEnMREXY2h/_ssgManifest.js net::ERR_ABORTED 403 (Forbidden)Understand this errorAI
+       GET https://kjkniceflag.com/_next/static/kAa-5IsBuFSYEnMREXY2h/_buildManifest.js net::ERR_ABORTED 403 (Forbidden)
+
+2.기능 및 디자인 더 상세하게 만들기
+crud기능이 모두 파이어베이스에서 가능하니까 부담없이 만들고 또 ssg에서 배포만 하자 (올해까지~)
+
+12/10
+"ssr은 못했지만 파이어베이스 백엔드를 이용한 간단한 ssg 페이지 배포는 완료~!"
+
+동적페이지 배포를 안해도 firestore에서 알아서 통신이 이루어졌다
+가설자체는 틀렸다 -> 정적페이지 배포만 해도 가능하다
+get말고 put요청도 ssr없이 가능한가? -> 가능하다...!
+내가 원하던 ssr을 통한 엄청 백엔드와의 통신이 자세한 빌드 및 배포는 불가능하다!
+
+마지막 실험 -> ssr 서버에서 띄운 상태에서도 가능한가? ->미리대답: 당연히 가능하겠지, 통신할게 없는데 => 실제 대답 : 당연히 된다
+
+만약에 가능하다면~ => ssr과의 통신을 통한 배포는 약간 내려놓고, 내가 원하는 과일지도 페이지의 기능 및 모양을 만들어보고 백엔드 강의로 넘어가자 (ssr통신은 백엔드에서 더 자세하게 배우고 하자)
+
+
+[빌드 배포 완료후 알게 된 사실]
+OK 문제상황: 카카오지도는 ssg,ssr과 관련이 없는데 지도 로딩이 안된다 
+-> 파이어베이스 서버까지 배포해보고 그 다음에 카카오지도까지 로딩을 다시 해보자
+=> 카카오api내에서 도메인 연결이 늦게 되었던 것 같다
+
+OK 파이어베이스 배포를 안했는데 데이터가 불러와진다, ssr켜지도 않았는데 -> 파이어베이스는 ssr빌드를 안해도 통신이 가능한건가? 그런 것 같다
+왜냐면 firestore에서 데이터를 수정했더니, 별다른 통신 없이 ssg빌드 내에서 바로 반영이 되었다
+
+- import type { AppProps } from "next/app";
+이부분의 vscode에서의 타입스만 변경해주자
+
+
 
 12/09
 동적, 정적 페이지 둘 다에 배포하기
