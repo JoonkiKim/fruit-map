@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useEffect, useRef } from "react";
 import { MapWrapper } from "./map.style";
 
-import { collection, getDocs, getFirestore } from "firebase/firestore/lite";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { firebasefruitapp } from "../../../../commons/libraries/firebase_fruitmap";
 
 declare const window: typeof globalThis & {
