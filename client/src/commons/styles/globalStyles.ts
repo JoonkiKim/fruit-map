@@ -7,11 +7,11 @@ export const globalStyles = css`
   * {
     margin: 0;
     box-sizing: border-box;
-    font-size: 20px;
+    /* font-size: 20px; */
     /* display: flex; */
     /* flex-direction: column; */
 
-    /* font-family: "myfont"; */
+    font-family: "myfont";
     /* text-align: center; */
   }
 
@@ -19,7 +19,7 @@ export const globalStyles = css`
     // font-family는 폰트의 별명을 내가 지어주는거고 src는 폰트를 가져올 주소를 적어주면됨
     // _app.tsx말고도 아무데서나 font-family: "myfont";를 해주면 이걸 적용할 수 있음
     font-family: "myfont";
-    src: url("/fonts/NotoSansKR-VariableFont_wght.ttf");
+    src: url("/fonts/TmoneyRoundWindRegular.ttf") format("truetype");
   }
 `;
 

@@ -1,32 +1,40 @@
-// import { atom, selector } from "recoil";
-// import { getAccessToken } from "../libraries/getAccessToken";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { atom, selector } from "recoil";
+import { firebasefruitapp } from "../libraries/firebase_fruitmap";
+import { refreshAccessToken } from "../libraries/refreshAccessTokenFB";
 
+// // 변수는 atom으로 만들고, 함수는 selector로 만든다
 // export const isEditState = atom({
 //   key: "isEditState",
 //   default: true,
 // });
 
-// // 변수는 atom으로 만들고, 함수는 selector로 만든다
-// export const accessTokenState = atom({
-//   key: "accessTokenState",
-//   default: "",
-// });
+export const accessTokenState = atom({
+  key: "accessTokenState",
+  default: "",
+});
 
-// export const loggedInCheck = atom({
-//   key: "loggedInCheck",
-//   default: false,
-// });
-
-// export const visitedPageState = atom({
-//   key: "visitedPageState",
-//   default: "",
-// });
+export const loggedInCheck = atom({
+  key: "loggedInCheck",
+  default: false,
+});
 
 // // 이게 글로벌 함수!!
-// export const restoreAccessTokenLoadable = selector({
-//   key: "restoreAccessTokenLoadable",
-//   get: async () => {
-//     const newAccessToken = await getAccessToken();
-//     return newAccessToken;
-//   },
-// });
+export const marketinfoGlobal = selector({
+  key: "marketinfoGlobal",
+  get: async () => {
+    const fruitshop = collection(getFirestore(firebasefruitapp), "fruitshop");
+    const result = await getDocs(fruitshop);
+    const marketinfo = result.docs.map((el) => el.data());
+    return marketinfo;
+  },
+});
+
+// 이게 글로벌 함수!!
+export const restoreAccessTokenLoadable = selector({
+  key: "restoreAccessTokenLoadable",
+  get: async () => {
+    const newAccessToken = await refreshAccessToken();
+    return newAccessToken;
+  },
+});

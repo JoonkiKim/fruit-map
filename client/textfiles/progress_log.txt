@@ -1,22 +1,128 @@
+12/23
+배포하기
+
+배포 후 어떤 기능 추가할지 생각해보기(관리자 & 사용자 페이지 구분?)
+
+
+[리팩토링]
+지도에서 조회하기 컴포넌트 코드 리팩토링(스타일태그 만들기)
+이미지 미리보기 배열 형태로 만들어서 최적화
+로그인 회원가입 폼 디자인 수정
+메인 지도 페이지 & 상세 페이지 디자인 수정 (지도페이지에서 로그인 체크 할때 로그인/회원가입이 아니라 접속중 이런거 나오게 하기)
+
+마이페이지 만들어서 거기서만 로그아웃 가능하게 
+
+12/20
+OK 로그인 유지버튼을 눌렀을때만 로그인 유지를 하고 아닐때는 브라우저를 닫으면 로그아웃되도록 하기 -> 
+await setPersistence(auth, persistence) 사용
+
+OK 최신 등록한 데이터를 지도 중심으로 설정
+OK 수정하기 페이지에서 주소 표시가 안된다 -> 불러올때 form스테이트의 이름이 달라서 그런거였다
+OK 수정하기 버튼이 갑자기 안 눌린다 -> image가 기본값이 표시되길래 setValue에서 imageUrl을 없앴더니 이미지가 없다고 표시되었다 -> 넣어줬다!
+
+OK 등록하기 페이지에서 영업시간 초기 값이 표시가 안된다 -> isReady랑 isEdit조건이 기본 등록하기 페이지에서는 필요가 없으니까 걔네는 제외해버림 -> 이렇게 했더니 수정하기 페이지에서 안되어서 isEdit이면 수정하기 컴포넌트로 가고 그떄 isReady이면 시간표시되도록 함 + isEdit이 아니면 표시 안되도록 함
+
+OK 가게 등록하기 버튼 만들기 -> 로그인 한 유저만 등록하기 버튼 활성화 -> 안되어있다면 로그인 페이지로 이동하도록 권한 분기
+OK map위에 등록하기 버튼을 띄우는 방법을 모르겟다 - position이랑 z index를 이용해서 고정되어있게 만듦
+
+OK 로그아웃 버튼 만들기 -> 로그인 유지 버튼을 넣어놔서, 로그아웃을 해도 isLoggedIn이 true로 유지된다 -> 로그인 유지 기능 때문에 그런거였음 -> 상태변화에 따라 로그인 유지 여부를 결정 / 로그아웃 버튼 클릭시 모달 오픈
+OK 로그인/회원가입 버튼 만들기 -> 로그인한 경우 해당 버튼 사라지고 "00님 환영합니다!"로 변경
+
+
+
+
+12/19
+OK 로그인, 회원가입 폼 까지는 만들음!!!!
+-> 세션 쿠키를 이용한 로그인 유지 방법은 클라이언트에서는 안된다
+파이어베이스에서는 세션 쿠키를 이용하려면 서버 '컴퓨터'가 무조건 있어야 함 -> 따라서 이번 플젝에서는 그냥 로컬스토리지로 하고, 백엔드 배운다음에 로그인에 대해 깊이 공부하고 그러고 나서 제대로된 인증 유지 코딩을 해보자
+
+OK gpt의 로그인 / 회원가입 폼 구현 => 이거 따라서 하기 + 파이어베이스 웹사이트에서 'auth 시작하기' 해줘야됨
+https://chatgpt.com/c/675ff122-6238-800a-b123-dda75320f160
+
+OK 회원가입
+https://jjang-j.tistory.com/m/48
+OK 로그인
+https://jjang-j.tistory.com/m/49?category=1179408
+
+
+OK 수정하기 페이지의 수정 후 수정한 부분만 요청날리는 함수 만들기 - updateDoc
+https://velog.io/@khy226/Firestore-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0
+
+
+12/18
+OK 수정하기 페이지 만들기(각잡고 만들기)- setValue사용하기기
+https://chatgpt.com/c/67611355-445c-8006-aad5-72105e6f858e
+
+
+OK 수정하기 페이지에서 기본 값 로딩까지 완료
+OK 영업시간의 기본값로딩이 안됨 -> isReady변수로 해결함
+
+
+
+12/17
+OK 지도에서 조회하기 
+OK 이미지노출시키기
+OK 카카오 지도 부분 컴포넌트로 빼서 관리하기
+
+OK 상세보기 -> id를 연결할때 문서ID를 배열에 추가해서 그거로 라우팅함, 개별 데이터를 불러올때는 getDocs가 아니라 getDoc이다
+OK 수정하기 페이지 라우팅해서 가져오기
+
+12/16
+
+OK 영업시간 입력창
+OK 주소 입력창
+OK DB에 입력 잘 날라가는지 확인 
+OK 동글동글디자인 하기
+
+파이어베이스 이미지 기능 확인 후 이미지 입력 기능 넣기 (대표 이미지 및 메뉴 이미지 등) - 이미지 업로드 기능 활성화 및 미리보기 최적화
+X gql 뮤테이션 말고 axios put 요청을 날리자 (다른 윈도우에 pin해놓은 내용 확인하기)
+X useMutation을 이용해서 firebase storage에 이미지 업로드 하는 방법은 없나?
+(https://chatgpt.com/c/675e5c08-0148-800a-9577-bc7118c681b9) 여기보고 따라하기
+=> 지피티한테 물어봐서 파이어스토리지와 파이어베이스를 이용한 이미지 업로드 기능 완성!
+
+OK 생성되는 게시글 아이디를 image 폴더 안에 만들어서 넣기 -> uuid 자체를 스테이트로 관리함
+
+OK 이미지 파일 정보를 별도의 컬렉션이 아닌 기존 파이어스토어 컬렉션에 에 넣기
+
+12/13
+- 가게 입력 페이지 만들기((new폴더에 있는 파일)관리자 페이지 만들기)
+(로그인 만들지 여부는 생각해보기-> 왜냐면 이건 백엔드의 영역이니까)
+
+OK 주소 입력창 만들어서 lat lng따로 뽑아지게 만들기
+OK링크 입력창, OK 영업시간 입력창(특정 시간을 선택할 수 있는 라이브러리) 만들기
+
+
+OK 신규 가게 입력 시 자동으로 id가 생성되도록 랜덤 id 부여하기
+
+
+12/12
+2.기능 및 디자인 더 상세하게 만들기
+crud기능이 모두 파이어베이스에서 가능하니까 부담없이 만들고 또 ssg에서 배포만 하자 (올해까지~)
+
+OK 레이아웃 꾸미기 + OK지도 선 없애기
+OK 로고 만들기
+OK 오늘의 과일 랜덤 추천 -> 불러오는 데이터를 리코일로 불러와서 쉽게 사용하기 + random으로 인덱스 뽑아내서 보여주기
+
+
 12/11
-상황정리: 
-OK 정적 웹 호스팅 주소로 들어가면 , 카카오지도 로딩자체가 안됨 => 왜냐면 도메인 연결이 안되었으니까!
-
-만약에 https://kjkniceflag.com/fruitsmap은 ssr로 연결되어서 단순 https://kjkniceflag.com랑 갖고 있는 코드가 다르다면..?(단순도메인은 out폴더를 최신거로 갖고 있고, 지도 페이지는 옛날거로 갖고 있다)
-
-- 그냥 https://kjkniceflag.com 만 들어가면 _ssgManifest.js가 정상 작동함
-- https://kjkniceflag.com/fruitsmap에 들어가면 _ssgManifest.js가 작동안함
-=> 이때 https://kjkniceflag.com/fruitsmap랑 https://kjkniceflag.com이랑 static아래쪽 폴더 이름이 다르다
-
-1. 이게 왜 발생하는 에러인지 알아보기
+OK 1. 이게 왜 발생하는 에러인지 알아보기 => 답: "ec2서버를 안켰다"
 out폴더에서의 구조가 다르다 -> s3의 폴더 구조에는 이름이 a5YrWAX9EU0hDXAJ3Rrxq인데, GET https://kjkniceflag.com/_next/static/kAa-5IsBuFSYEnMREXY2h/_buildManifest.js net::ERR_ABORTED 403 (Forbidden) 이 에러에는 폴더 이름이 kAa-5IsBuFSYEnMREXY2h로 되어있다
 => 인강에서 어떻게 하라고 한게 있었는데 모르겠다. 이 경우 어떻게 해결해야하는지 확인해보자
 
        GET https://kjkniceflag.com/_next/static/kAa-5IsBuFSYEnMREXY2h/_ssgManifest.js net::ERR_ABORTED 403 (Forbidden)Understand this errorAI
        GET https://kjkniceflag.com/_next/static/kAa-5IsBuFSYEnMREXY2h/_buildManifest.js net::ERR_ABORTED 403 (Forbidden)
 
-2.기능 및 디자인 더 상세하게 만들기
-crud기능이 모두 파이어베이스에서 가능하니까 부담없이 만들고 또 ssg에서 배포만 하자 (올해까지~)
+상황정리: 
+OK 정적 웹 호스팅 주소로 들어가면 , 카카오지도 로딩자체가 안됨 => 왜냐면 도메인 연결이 안되었으니까!
+
+X 만약에 https://kjkniceflag.com/fruitsmap은 ssr로 연결되어서 단순 https://kjkniceflag.com랑 갖고 있는 코드가 다르다면..?(단순도메인은 out폴더를 최신거로 갖고 있고, 지도 페이지는 옛날거로 갖고 있다) => 새로 업데이트를 해도 그대로 연결되니까 ssr연결된다는 가설은 아님
+
+- 그냥 https://kjkniceflag.com 만 들어가면 _ssgManifest.js가 정상 작동함
+- https://kjkniceflag.com/fruitsmap에 들어가면 _ssgManifest.js가 작동안함
+=> 이때 https://kjkniceflag.com/fruitsmap랑 https://kjkniceflag.com이랑 static아래쪽 폴더 이름이 다르다
+
+=> fruitsmap은 서버 통신을 하는 폴더였나보다
+
 
 12/10
 "ssr은 못했지만 파이어베이스 백엔드를 이용한 간단한 ssg 페이지 배포는 완료~!"

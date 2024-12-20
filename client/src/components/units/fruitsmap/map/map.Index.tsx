@@ -1,28 +1,68 @@
 import Head from "next/head";
-import { useEffect, useRef } from "react";
-import { MapWrapper } from "./map.style";
-
+import { MouseEvent, useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import { MainContentWrapper, MapWrapper, NewMarketButton } from "./map.style";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { firebasefruitapp } from "../../../../commons/libraries/firebase_fruitmap";
+import OverlayContent from "./map.detail";
+import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+import { useRecoilState } from "recoil";
+import { loggedInCheck, marketinfoGlobal } from "../../../../commons/stores";
+import { MarketInfo } from "../register/register.types";
 
 declare const window: typeof globalThis & {
   kakao: any;
 };
 
 export default function MapIndexPage() {
-  // 서버사이드 렌더링 방지를 위해 useEffect로 실행
+  const router = useRouter();
+
+  const [modalMessage, setModalMessage] = useState("");
+  const [logInCheck, setLogInCheck] = useRecoilState(loggedInCheck);
+  const [isModalAlertOpen, setIsModalAlertOpen] = useState(false);
+
+  const onToggleAlertModal = () => {
+    setIsModalAlertOpen((prev) => !prev);
+  };
+
+  const onClickMoveToDetail = (event: MouseEvent<HTMLDivElement>) => {
+    if (event.currentTarget instanceof HTMLDivElement) {
+      try {
+        router.push(`/fruitsmap/${event.currentTarget.id}`);
+      } catch (error) {
+        if (error instanceof Error) setModalMessage(error.message);
+        onToggleAlertModal();
+      }
+    }
+  };
+
+  const onClickNewMarket = () => {
+    router.push("/fruitsmap/new"); // 가게 등록 페이지로 이동
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const initializeMap = async () => {
-        // Firebase 데이터 가져오기
         const fruitshop = collection(
           getFirestore(firebasefruitapp),
           "fruitshop"
         );
         const result = await getDocs(fruitshop);
-        const marketinfo = result.docs.map((el) => el.data());
 
-        // 카카오 맵 스크립트 로드
+        // 기존 데이터에 문서 ID를 추가한 배열 생성
+        const marketinfo: MarketInfo[] = result.docs.map((el) => ({
+          ...(el.data() as MarketInfo),
+          documentId: el.id,
+        }));
+
+        // createdAt 기준 최신 데이터 찾기
+        const latestPosition = marketinfo.reduce((latest, current) => {
+          const latestDate = latest.createdAt?.toDate() || new Date(0); // Timestamp를 Date로 변환
+          const currentDate = current.createdAt?.toDate() || new Date(0);
+          return currentDate > latestDate ? current : latest;
+        }, marketinfo[0]);
+
         const script = document.createElement("script");
         script.src =
           "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=1959f4231719c25f68b4c5b5443d7c37&libraries=services";
@@ -32,19 +72,18 @@ export default function MapIndexPage() {
           window.kakao.maps.load(() => {
             const container = document.getElementById("map");
             const options = {
-              center: new window.kakao.maps.LatLng(37.48014, 126.94588),
+              center: new window.kakao.maps.LatLng(
+                latestPosition?.lat || 37.498822636271,
+                latestPosition?.lng || 126.928393911783
+              ),
               level: 3,
             };
             const map = new window.kakao.maps.Map(container, options);
 
-            const overlays = []; // 오버레이를 관리하는 배열
-
-            // 모든 오버레이 닫기 함수
-            const closeAllOverlays = () => {
+            const overlays: any[] = [];
+            const closeAllOverlays = () =>
               overlays.forEach((overlay) => overlay.setMap(null));
-            };
 
-            // 마커 및 오버레이 추가
             marketinfo.forEach((position) => {
               const marker = new window.kakao.maps.Marker({
                 position: new window.kakao.maps.LatLng(
@@ -53,47 +92,33 @@ export default function MapIndexPage() {
                 ),
               });
               marker.setMap(map);
-              const overlayContent = document.createElement("div");
-              overlayContent.innerHTML = `
-              <div style="padding: 10px; background: white; border: 1px solid #ccc; position: relative;">
-                <div>
-                <a href=${position.link} target="_blank"  style="font-size: 16px; font-weight: bold; text-decoration-line: none">
-                ${position.name}
-               </a>
-                </div>
-                <div style="font-size: 14px; margin-top: 5px;">${position.menu}</div>
-                <div style="font-size: 12px; margin-top: 5px;">${position.address}</div>
-                
-                <button style="position: absolute; top: 10px; right: 5px; color: #gray; border: none; cursor: pointer;" class="close-overlay-btn">X</button>
-              </div>
-            `;
-              overlayContent.style.width = "220px";
-              overlayContent.style.height = "150px";
 
+              const overlayDiv = document.createElement("div");
               const customOverlay = new window.kakao.maps.CustomOverlay({
-                clickable: true,
                 position: marker.getPosition(),
-                content: overlayContent,
-                yAnchor: 1,
+                content: overlayDiv,
+                yAnchor: 1.3,
+                clickable: true,
               });
+
+              // 조회페이지는 따로 컴포넌트로 관리
+              ReactDOM.render(
+                <OverlayContent
+                  position={position}
+                  onClose={() => customOverlay.setMap(null)}
+                  onClickMoveToDetail={onClickMoveToDetail}
+                />,
+                overlayDiv
+              );
 
               overlays.push(customOverlay);
 
-              // `X` 버튼 클릭 이벤트 추가
-              overlayContent
-                .querySelector(".close-overlay-btn")
-                ?.addEventListener("click", () => {
-                  customOverlay.setMap(null);
-                });
-
-              // 마커 클릭 이벤트
               window.kakao.maps.event.addListener(marker, "click", () => {
-                closeAllOverlays(); // 기존 오버레이 닫기
-                customOverlay.setMap(map); // 현재 오버레이 열기
+                closeAllOverlays();
+                customOverlay.setMap(map);
               });
             });
 
-            // 지도 클릭 시 모든 오버레이 닫기
             window.kakao.maps.event.addListener(map, "click", closeAllOverlays);
           });
         };
@@ -128,7 +153,14 @@ export default function MapIndexPage() {
         <meta property="og:image" content="" />
       </Head>
 
-      <MapWrapper id="map"></MapWrapper>
+      <MainContentWrapper>
+        <MapWrapper id="map"></MapWrapper>
+        {logInCheck && (
+          <NewMarketButton onClick={onClickNewMarket}>
+            가게 등록하기
+          </NewMarketButton>
+        )}
+      </MainContentWrapper>
     </div>
   );
 }
