@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build:ssr": "next build --no-lint",
+    "build:ssr": "next build --no-lint --verbose",
     "build:ssg": "next build && next export",
     "start": "next start",
     "lint": "next lint",
