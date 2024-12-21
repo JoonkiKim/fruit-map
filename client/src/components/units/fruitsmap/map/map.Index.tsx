@@ -6,9 +6,8 @@ import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { firebasefruitapp } from "../../../../commons/libraries/firebase_fruitmap";
 import OverlayContent from "./map.detail";
 import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
 import { useRecoilState } from "recoil";
-import { loggedInCheck, marketinfoGlobal } from "../../../../commons/stores";
+import { loggedInCheck } from "../../../../commons/stores";
 import { MarketInfo } from "../register/register.types";
 
 declare const window: typeof globalThis & {
@@ -102,6 +101,8 @@ export default function MapIndexPage() {
               });
 
               // 조회페이지는 따로 컴포넌트로 관리
+              // 여기 이 코드만 lint 무시
+              // eslint-disable-next-line react/no-deprecated
               ReactDOM.render(
                 <OverlayContent
                   position={position}

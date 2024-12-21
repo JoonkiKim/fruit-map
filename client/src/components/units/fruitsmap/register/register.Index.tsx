@@ -307,7 +307,7 @@ export default function FruitsRegisterComponentPage(
     const isMenuChanged = data.menu !== initialValues.menu;
 
     const isAdressZoneCodeChanged =
-      data.marketaddresszonecode != initialValues.marketaddresszonecode;
+      data.marketaddresszonecode !== initialValues.marketaddresszonecode;
     const isAdressChanged =
       addressData?.address && // addressData가 존재할 때만 비교
       addressData?.address?.trim() !== initialValues.marketaddress.trim();
