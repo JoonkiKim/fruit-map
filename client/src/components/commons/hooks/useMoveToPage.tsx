@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import useRouter from "next/router";
 
 /**
  * Custom hook to navigate between pages using Next.js router.

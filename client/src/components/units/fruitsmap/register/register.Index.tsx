@@ -40,7 +40,7 @@ import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
 import { useEffect, useState } from "react";
 import { Modal } from "antd";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
+import useRouter from "next/router";
 import UploadsFruitsMarket from "../../../commons/imageUpload/Upload01.container";
 import { MarketInfo } from "./register.types";
 // import { doc, updateDoc } from "firebase/firestore";
