@@ -94,7 +94,8 @@ export default function LoginContainer() {
   return (
     <>
       {/* form을 로그인, 회원가입에 사용할때는 onSubmit을 쓰자 */}
-      <form onSubmit={wrapFormAsync(handleSubmit(onClickLogin))}>
+      <form onSubmit={handleSubmit(onClickLogin)}>
+        {/* <form onSubmit={wrapFormAsync(handleSubmit(onClickLogin))}> */}
         <LoginWrapper>
           <LoginTitleWrapper>로그인</LoginTitleWrapper>
           <EmailWrapper>

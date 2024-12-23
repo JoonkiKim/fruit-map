@@ -397,7 +397,8 @@ export default function FruitsRegisterComponentPage(
   return (
     <>
       <MainContentWrapper>
-        <form onSubmit={wrapFormAsync(handleSubmit(onSubmit))}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* <form onSubmit={wrapFormAsync(handleSubmit(onSubmit))}> */}
           <FormWrapper>
             <LogoWrapper>
               <LogoImg src="/images/fruit.png" onClick={onLogoClick}></LogoImg>
