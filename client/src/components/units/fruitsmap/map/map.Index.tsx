@@ -102,7 +102,7 @@ export default function MapIndexPage() {
               });
 
               // 조회페이지는 따로 컴포넌트로 관리
-
+              // eslint-disable-next-line react/no-deprecated
               ReactDOM.render(
                 <OverlayContent
                   position={position}
