@@ -1,11 +1,12 @@
 import Head from "next/head";
 import { MouseEvent, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+// import { createRoot } from "react-dom/client";
 import { MainContentWrapper, MapWrapper, NewMarketButton } from "./map.style";
-import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { collection, getDocs, getFirestore } from "firebase/firestore/lite";
 import { firebasefruitapp } from "../../../../commons/libraries/firebase_fruitmap";
 import OverlayContent from "./map.detail";
-import { useRouter } from "next/router";
+import useRouter from "next/router";
 import { useRecoilState } from "recoil";
 import { loggedInCheck } from "../../../../commons/stores";
 import { MarketInfo } from "../register/register.types";
@@ -101,8 +102,7 @@ export default function MapIndexPage() {
               });
 
               // 조회페이지는 따로 컴포넌트로 관리
-              // 여기 이 코드만 lint 무시
-              // eslint-disable-next-line react/no-deprecated
+
               ReactDOM.render(
                 <OverlayContent
                   position={position}

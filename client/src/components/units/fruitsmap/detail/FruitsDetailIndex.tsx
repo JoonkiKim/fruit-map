@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import useRouter from "next/router";
 import { useEffect, useState } from "react";
 import { doc, getDoc, getFirestore } from "firebase/firestore/lite";
 import { db } from "../../../../commons/libraries/firebase_fruitmap";

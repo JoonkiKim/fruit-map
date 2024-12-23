@@ -15,7 +15,7 @@ import {
 } from "./loginStyles";
 
 import { useRecoilState } from "recoil";
-import { useRouter } from "next/router";
+import useRouter from "next/router";
 import { useForm } from "react-hook-form";
 
 import * as yup from "yup";

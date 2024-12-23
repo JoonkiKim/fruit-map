@@ -10,7 +10,7 @@ import {
 } from "./RegisterStyles";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
-import { useRouter } from "next/router";
+import useRouter from "next/router";
 
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
