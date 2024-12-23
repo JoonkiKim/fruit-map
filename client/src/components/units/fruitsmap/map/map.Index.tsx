@@ -6,7 +6,7 @@ import { MainContentWrapper, MapWrapper, NewMarketButton } from "./map.style";
 import { collection, getDocs, getFirestore } from "firebase/firestore/lite";
 import { firebasefruitapp } from "../../../../commons/libraries/firebase_fruitmap";
 import OverlayContent from "./map.detail";
-import useRouter from "next/router";
+import useRouter from "next";
 import { useRecoilState } from "recoil";
 import { loggedInCheck } from "../../../../commons/stores";
 import { MarketInfo } from "../register/register.types";
