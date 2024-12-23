@@ -4,7 +4,7 @@ import { auth } from "./firebase_fruitmap"; // Firebase 초기화
 //   "https://securetoken.googleapis.com/v1/token?key=AIzaSyA2ll3QKwE7LoJvAX5H3maRjJh9Skqntsc";
 
 // accessToken 상태
-let refreshaccessToken = null;
+let refreshaccessToken = undefined;
 
 // Firebase 액세스 토큰 갱신 함수
 export const refreshAccessToken = async (): Promise<string | undefined> => {

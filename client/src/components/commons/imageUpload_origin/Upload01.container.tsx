@@ -9,7 +9,7 @@ import { Modal } from "antd";
 import { checkValidationFile } from "../../../commons/libraries/validationFile";
 
 export default function Uploads01(props: IUploads01Props) {
-  const fileRef = useRef<HTMLInputElement>(null);
+  const fileRef = useRef<HTMLInputElement>(undefined);
   const [uploadFile] = useMutation(UPLOAD_FILE);
 
   const onClickUpload = (e: React.MouseEvent): void => {

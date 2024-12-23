@@ -180,15 +180,18 @@ export default function FruitsRegisterComponentPage(
       window.kakao.maps.load(() => {
         const geocoder = new window.kakao.maps.services.Geocoder();
 
-        geocoder.addressSearch(data.address, function (result, status) {
-          if (status === window.kakao.maps.services.Status.OK) {
-            const latresult = result[0].y; // 위도
-            const lngresult = result[0].x; // 경도
+        geocoder.addressSearch(
+          data.address,
+          function (result: any, status: any) {
+            if (status === window.kakao.maps.services.Status.OK) {
+              const latresult = result[0].y; // 위도
+              const lngresult = result[0].x; // 경도
 
-            setLat(latresult);
-            setLng(lngresult);
+              setLat(latresult);
+              setLng(lngresult);
+            }
           }
-        });
+        );
       });
     };
 
@@ -197,7 +200,7 @@ export default function FruitsRegisterComponentPage(
   };
 
   // 영업시간 put 입력 함수
-  const handleTimeChange = (value) => {
+  const handleTimeChange = (value: any) => {
     if (value && value.length === 2) {
       const [start, end] = value;
       const formattedTime = `${start?.format(format)} - ${end?.format(format)}`;

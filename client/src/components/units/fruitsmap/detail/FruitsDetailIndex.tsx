@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import { doc, getDoc, getFirestore } from "firebase/firestore/lite";
 import { db } from "../../../../commons/libraries/firebase_fruitmap";
 import * as D from "./FruitsDetail.style";
+import { MarketInfo } from "../register/register.types";
 
 export default function FruitsDetailContainerPage() {
   const router = useRouter();
 
   const id = String(router.query.marketId);
 
-  const [marketData, setMarketData] = useState(null);
+  const [marketData, setMarketData] = useState(undefined);
 
   useEffect(() => {
     if (!id) return;
@@ -30,7 +31,9 @@ export default function FruitsDetailContainerPage() {
           console.error("문서가 존재하지 않습니다.");
         }
       } catch (error) {
-        console.error("문서 데이터 가져오기 실패:", error.message);
+        if (error instanceof Error) {
+          console.error("문서 데이터 가져오기 실패:", error.message);
+        }
       }
     };
 
@@ -53,10 +56,10 @@ export default function FruitsDetailContainerPage() {
         </p>
         <p>
           <strong>이미지:</strong> <br />
-          {Array.isArray(marketData?.imageurl) &&
-          marketData?.imageurl.length > 0 ? (
+          {Array.isArray(marketData?.imageUrl) &&
+          marketData?.imageUrl.length > 0 ? (
             <img
-              src={marketData?.imageurl[0]}
+              src={marketData?.imageUrl[0]}
               alt="가게 이미지"
               style={{ width: "300px", height: "200px", objectFit: "cover" }}
             />

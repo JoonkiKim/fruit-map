@@ -34,7 +34,7 @@ export default function LayoutHeader() {
     setIsModalAlertOpen((prev) => !prev);
   };
 
-  const [randomIndex, setRandomIndex] = useState(null); // 초기 값 설정
+  const [randomIndex, setRandomIndex] = useState<number>(0); // 초기 값 설정
 
   useEffect(() => {
     if (marketinfo.state === "hasValue" && marketinfo.contents.length > 0) {

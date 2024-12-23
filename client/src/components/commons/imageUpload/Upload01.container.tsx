@@ -11,7 +11,7 @@ import { storage } from "../../../commons/libraries/firebase_fruitmap";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function UploadsFruitsMarket(props: IUploads01Props) {
-  const fileRef = useRef<HTMLInputElement>(null);
+  const fileRef = useRef<HTMLInputElement>(undefined);
 
   const onClickUpload = (e: React.MouseEvent): void => {
     e.preventDefault();

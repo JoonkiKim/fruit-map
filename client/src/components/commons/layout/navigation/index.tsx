@@ -39,21 +39,6 @@ const FreeBoard = styled.div<FreeBoardProps>`
   &:hover {
     cursor: pointer;
   }
-
-  // 특정 요소에만 css 적용하고 싶으면 true flase를 만들어서 이렇게 적용해주면 된다
-  ${({ applyLine }) =>
-    applyLine &&
-    `
-    ::after {
-      content: "";
-      position: absolute;
-      width: 1px;
-      height: 20px;
-      background-color: white;
-      top: 22px; /* Centering the line vertically */
-      right: -1px; /* Positioning line to the right side */
-    }
-  `}
 `;
 
 export default function LayoutNavigation() {
