@@ -45,8 +45,8 @@ export default function FirebasePracticePage() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onClickSubmit)}>
-        {/* <form onSubmit={wrapFormAsync(handleSubmit(onClickSubmit))}> */}
+      {/* <form onSubmit={handleSubmit(onClickSubmit)}> */}
+      <form onSubmit={wrapFormAsync(handleSubmit(onClickSubmit))}>
         가게이름: <input type="text" {...register("name")} />
         대표메뉴 : <input type="text" {...register("menu")} />
         주소 : <input type="text" {...register("address")} />

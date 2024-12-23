@@ -81,8 +81,8 @@ export default function SignUpContainer() {
   return (
     <>
       <RegisterWrapper>
-        <form onSubmit={handleSubmit(onClickSignUp)}>
-          {/* <form onSubmit={wrapFormAsync(handleSubmit(onClickSignUp))}> */}
+        {/* <form onSubmit={handleSubmit(onClickSignUp)}> */}
+        <form onSubmit={wrapFormAsync(handleSubmit(onClickSignUp))}>
           <RegisterTitle>회원가입</RegisterTitle>
           <RegisterDivWrapper>
             <RegisterInputTitle>이메일</RegisterInputTitle>
