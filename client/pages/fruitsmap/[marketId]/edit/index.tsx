@@ -12,7 +12,7 @@ import {
   firebasefruitapp,
 } from "../../../../src/commons/libraries/firebase_fruitmap";
 import FruitsRegisterComponentPage from "../../../../src/components/units/fruitsmap/register/register.Index";
-import useRouter from "next/router";
+import { useRouter } from "next/router";
 import { MarketInfo } from "../../../../src/components/units/fruitsmap/register/register.types";
 
 export default function FruitsMapPage() {
