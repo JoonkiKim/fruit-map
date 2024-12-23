@@ -12,8 +12,8 @@ export default function OverlayContent({
   onClickMoveToDetail,
 }: OverlayContentProps) {
   const imageUrl =
-    Array.isArray(position.imageurl) && position.imageurl[0]
-      ? position.imageurl[0]
+    Array.isArray(position.imageUrl) && position.imageUrl[0]
+      ? position.imageUrl[0]
       : "/images/fruit.png";
 
   return (
