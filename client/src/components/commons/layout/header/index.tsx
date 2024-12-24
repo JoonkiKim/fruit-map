@@ -3,11 +3,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValueLoadable } from "recoil";
 import { loggedInCheck, marketinfoGlobal } from "../../../../commons/stores";
-import {
-  auth,
-  firebasefruitapp,
-} from "../../../../commons/libraries/firebase_fruitmap";
-import { browserSessionPersistence, getAuth, signOut } from "firebase/auth";
+import { auth } from "../../../../commons/libraries/firebase_fruitmap";
+import { browserSessionPersistence } from "firebase/auth";
 import { ModalAlert } from "../../../units/fruitsmap/map/map.style";
 
 import {

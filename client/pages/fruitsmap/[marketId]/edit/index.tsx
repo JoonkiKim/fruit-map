@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 import { doc, getDoc } from "firebase/firestore/lite";
 import { db } from "../../../../src/commons/libraries/firebase_fruitmap";
-import FruitsRegisterComponentPage from "../../../../src/components/units/fruitsmap/register/register.Index";
 import { useRouter } from "next/router";
 import { MarketInfo } from "../../../../src/components/units/fruitsmap/register/register.types";
+import FruitsRegisterComponentPage from "../../../../src/components/units/fruitsmap/register/register.Index";
 
 export default function FruitsMapPage() {
   const [defaultData, setDefaultData] = useState<MarketInfo | undefined>(

@@ -27,7 +27,6 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../../../commons/libraries/firebase_fruitmap";
-import { wrapFormAsync } from "../../../commons/libraries/asyncFunc";
 import { accessTokenState, loggedInCheck } from "../../../commons/stores";
 import { useState } from "react";
 

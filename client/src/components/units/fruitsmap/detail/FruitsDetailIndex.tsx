@@ -1,9 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { doc, getDoc, getFirestore } from "firebase/firestore/lite";
+import { doc, getDoc } from "firebase/firestore/lite";
 import { db } from "../../../../commons/libraries/firebase_fruitmap";
 import * as D from "./FruitsDetail.style";
-import { MarketInfo } from "../register/register.types";
 
 export default function FruitsDetailContainerPage() {
   const router = useRouter();
