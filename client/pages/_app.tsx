@@ -15,9 +15,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <ApolloSetting>
           <>
             <Global styles={globalStyles} />
+
             <Layout>
               <Component {...pageProps} />
             </Layout>
+
             {/* // Component는 우리가 지금 보는 페이지 */}
             {/* index.js에서 실행을 하면 html부분이 잘라내기 되어서 component부분으로 들어와서 실행이 된다 */}
           </>

@@ -23,7 +23,7 @@ export default function LayoutHeader() {
   const router = useRouter();
 
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loggedInCheck);
-  const marketinfo = useRecoilValueLoadable(marketinfoGlobal);
+  // const marketinfo = useRecoilValueLoadable(marketinfoGlobal);
 
   const [isModalAlertOpen, setIsModalAlertOpen] = useState(false);
 
@@ -31,14 +31,14 @@ export default function LayoutHeader() {
     setIsModalAlertOpen((prev) => !prev);
   };
 
-  const [randomIndex, setRandomIndex] = useState<number>(0); // 초기 값 설정
+  // const [randomIndex, setRandomIndex] = useState<number>(0); // 초기 값 설정
 
-  useEffect(() => {
-    if (marketinfo.state === "hasValue" && marketinfo.contents.length > 0) {
-      // 클라이언트에서만 랜덤 인덱스를 설정
-      setRandomIndex(Math.floor(Math.random() * marketinfo.contents.length));
-    }
-  }, [marketinfo]);
+  // useEffect(() => {
+  //   if (marketinfo.state === "hasValue" && marketinfo.contents.length > 0) {
+  //     // 클라이언트에서만 랜덤 인덱스를 설정
+  //     setRandomIndex(Math.floor(Math.random() * marketinfo.contents.length));
+  //   }
+  // }, [marketinfo]);
 
   const onLogoClick = () => {
     router.push(`/fruitsmap`);
@@ -70,7 +70,7 @@ export default function LayoutHeader() {
           <LogoTxt>과일판매점 지도</LogoTxt>
         </LogoWrapper>
 
-        {isLoggedIn && (
+        {/* {isLoggedIn && (
           <RecommendWrapper>
             {marketinfo.state === "hasValue" && marketinfo.contents.length > 0
               ? randomIndex !== null
@@ -78,7 +78,7 @@ export default function LayoutHeader() {
                 : "추천 과일을 찾는 중입니다."
               : "추천 과일을 찾는 중입니다."}
           </RecommendWrapper>
-        )}
+        )} */}
 
         {isLoggedIn ? (
           <HeaderRightWrapper>

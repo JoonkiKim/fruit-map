@@ -23,6 +23,9 @@ interface IApolloSettingProps {
 export default function ApolloSetting(props: IApolloSettingProps) {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [logInCheck, setLogInCheck] = useRecoilState(loggedInCheck);
+  if (accessToken === undefined || logInCheck === undefined) {
+    return <div>로딩 중...</div>;
+  }
 
   // 파이어베이스에서는 로컬스토리지에 저장하는 방식으로 로그인 유지
 
