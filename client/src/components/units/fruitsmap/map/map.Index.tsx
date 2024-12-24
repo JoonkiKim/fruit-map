@@ -46,6 +46,11 @@ export default function MapIndexPage() {
     }
   };
 
+  useEffect(() => {
+    // 특정 경로의 페이지를 미리 가져옵니다.
+    router.prefetch("/fruitsmap/new");
+  }, [router]);
+
   const onClickNewMarket = () => {
     router.push("/fruitsmap/new"); // 가게 등록 페이지로 이동
   };

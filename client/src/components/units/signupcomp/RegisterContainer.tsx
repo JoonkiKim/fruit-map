@@ -80,8 +80,11 @@ export default function SignUpContainer() {
     }
   };
 
+  useEffect(() => {
+    router.prefetch("/login");
+  }, [router]);
   const moveToLogin = () => {
-    router.push(`/login/`);
+    router.push("/login");
   };
 
   return (

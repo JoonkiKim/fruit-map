@@ -84,7 +84,9 @@ export default function ApolloSetting(props: IApolloSettingProps) {
 
   const client = new ApolloClient({
     link: ApolloLink.from([authLink, uploadLink]),
-    cache: GLOBAL_STATE, // 컴퓨터의 메모리에다가 백엔드에서 받아온 데이터 임시로 저장해놓기 => 이게 글로벌 스테이트임!!
+
+    cache: GLOBAL_STATE,
+    // 컴퓨터의 메모리에다가 백엔드에서 받아온 데이터 임시로 저장해놓기 => 이게 글로벌 스테이트임!!
   });
   // prettier-ignore
   return (

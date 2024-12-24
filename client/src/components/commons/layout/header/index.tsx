@@ -40,12 +40,17 @@ export default function LayoutHeader() {
   //   }
   // }, [marketinfo]);
 
+  useEffect(() => {
+    // 특정 경로의 페이지를 미리 가져옵니다.
+    router.prefetch("/fruitsmap");
+    router.prefetch("/login");
+  }, [router]);
   const onLogoClick = () => {
-    router.push(`/fruitsmap`);
+    router.push("/fruitsmap");
   };
 
   const onClickMovetoLogin = () => {
-    router.push(`/login`);
+    router.push("/login");
   };
 
   // 로그아웃 함수

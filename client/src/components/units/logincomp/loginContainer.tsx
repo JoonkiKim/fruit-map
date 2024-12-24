@@ -28,7 +28,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../../commons/libraries/firebase_fruitmap";
 import { loggedInCheck } from "../../../commons/stores";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { wrapFormAsync } from "../../../commons/libraries/asyncFunc";
 
 const schema = yup.object({
@@ -63,6 +63,12 @@ export default function LoginContainer() {
     setStayLoggedIn((prev) => !prev);
   };
 
+  useEffect(() => {
+    // 특정 경로의 페이지를 미리 가져옵니다.
+    router.prefetch("/fruitsmap");
+    router.prefetch("/signUp");
+  }, [router]);
+
   const onClickLogin = async (data: IFormData) => {
     try {
       setLoading(true); // 로딩 상태 시작
@@ -89,7 +95,7 @@ export default function LoginContainer() {
         await new Promise((resolve) => setTimeout(resolve, 500)); // 라우터 준비 대기
       }
 
-      await router.push(`/fruitsmap`);
+      await router.push("/fruitsmap");
     } catch (error) {
       if (error instanceof Error) alert(error.message);
     } finally {

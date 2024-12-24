@@ -39,6 +39,10 @@ export default function FruitsDetailContainerPage() {
     fetchMarketData();
   }, [id]);
 
+  useEffect(() => {
+    // 특정 경로의 페이지를 미리 가져옵니다.
+    router.prefetch(`/fruitsmap/${router.query.marketId}/edit`);
+  }, [router]);
   const moveToEdit = () => {
     router.push(`/fruitsmap/${router.query.marketId}/edit`);
   };
