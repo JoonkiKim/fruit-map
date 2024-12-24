@@ -14,6 +14,16 @@ export const MapWrapper = styled.div`
   /* border: 1px solid black; */
 `;
 
+export const LoadingWrapper = styled.div`
+  width: 100%; /* 브라우저 너비 전체 */
+  height: 100%;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const InfoBox = styled.div`
   width: 200px;
   height: 80px;

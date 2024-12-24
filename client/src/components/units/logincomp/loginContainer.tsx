@@ -62,7 +62,7 @@ export default function LoginContainer() {
     setStayLoggedIn((prev) => !prev);
   };
 
-  const onClickLogin = async (data) => {
+  const onClickLogin = async (data: IFormData) => {
     try {
       const persistence = stayLoggedIn
         ? browserLocalPersistence // 브라우저 닫아도 유지
@@ -81,14 +81,21 @@ export default function LoginContainer() {
 
       setIsLoggedIn(true);
       alert("로그인 성공!");
-      router.push(`/fruitsmap`);
+
+      if (!router.isReady) throw new Error("라우터가 준비되지 않았습니다.");
+      await router.push(`/fruitsmap`);
     } catch (error) {
-      alert(error.message);
+      if (error instanceof Error) alert(error.message);
     }
   };
 
-  const moveToRegister = () => {
-    router.push("/signUp");
+  const moveToRegister = async () => {
+    try {
+      if (!router.isReady) throw new Error("라우터가 준비되지 않았습니다.");
+      await router.push("/signUp");
+    } catch (error) {
+      console.error("회원가입 페이지로 이동 중 에러 발생:", error);
+    }
   };
 
   return (

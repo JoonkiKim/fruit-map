@@ -97,11 +97,7 @@ export default function FruitsRegisterComponentPage(
   const [addressData, setAddressData] = useState<Address | undefined>();
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
-  const [uuid, setUuid] = useState("");
-
-  useEffect(() => {
-    setUuid(uuidv4()); // 컴포넌트가 처음 렌더링될 때 UUID 생성
-  }, []);
+  const [uuid, setUuid] = useState(uuidv4());
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -161,45 +157,78 @@ export default function FruitsRegisterComponentPage(
     router.push(`/fruitsmap`);
   };
 
-  const handleComplete = (data: Address) => {
-    // console.log(data);
-    setAddressData(data);
-    onToggleModal();
-    setValue("marketaddress", data.address);
-    setValue("marketaddresszonecode", data.zonecode);
+  // const handleComplete = (data: Address) => {
+  //   // console.log(data);
+  //   setAddressData(data);
+  //   onToggleModal();
+  //   setValue("marketaddress", data.address);
+  //   setValue("marketaddresszonecode", data.zonecode);
+  //   if (!window.kakao || !window.kakao.maps) {
+  //     throw new Error("Kakao Maps SDK not loaded.");
+  //   }
 
-    // 주소의 handleComplete안에 카카오태그 불러오는 것까지 다 하는거다
-    // 카카오 지도 스크립트 추가
-    const script = document.createElement("script");
-    script.src = script.src =
-      "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=1959f4231719c25f68b4c5b5443d7c37&libraries=services";
+  //   // 주소의 handleComplete안에 카카오태그 불러오는 것까지 다 하는거다
+  //   // 카카오 지도 스크립트 추가
+  //   const script = document.createElement("script");
+  //   script.src = script.src =
+  //     "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=1959f4231719c25f68b4c5b5443d7c37&libraries=services";
 
-    document.head.appendChild(script);
+  //   document.head.appendChild(script);
 
-    script.onload = () => {
-      window.kakao.maps.load(() => {
-        const geocoder = new window.kakao.maps.services.Geocoder();
+  //   script.onload = () => {
+  //     window.kakao.maps.load(() => {
+  //       const geocoder = new window.kakao.maps.services.Geocoder();
 
-        geocoder.addressSearch(
-          data.address,
-          function (result: any, status: any) {
-            if (status === window.kakao.maps.services.Status.OK) {
-              const latresult = result[0].y; // 위도
-              const lngresult = result[0].x; // 경도
+  //       geocoder.addressSearch(
+  //         data.address,
+  //         function (result: any, status: any) {
+  //           if (status === window.kakao.maps.services.Status.OK) {
+  //             const latresult = result[0].y; // 위도
+  //             const lngresult = result[0].x; // 경도
 
-              setLat(latresult);
-              setLng(lngresult);
-            }
-          }
-        );
-      });
-    };
+  //             setLat(latresult);
+  //             setLng(lngresult);
+  //           }
+  //         }
+  //       );
+  //     });
+  //   };
 
-    // console.log(lat);
-    // console.log(lng);
-  };
+  //   // console.log(lat);
+  //   // console.log(lng);
+  // };
 
   // 영업시간 put 입력 함수
+
+  const handleComplete = (data: Address) => {
+    try {
+      setAddressData(data);
+      onToggleModal();
+      setValue("marketaddress", data.address);
+      setValue("marketaddresszonecode", data.zonecode);
+
+      if (!window.kakao || !window.kakao.maps) {
+        throw new Error("Kakao Maps SDK not loaded.");
+      }
+
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      geocoder.addressSearch(data.address, (result: any, status: any) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          const latresult = result[0].y; // 위도
+          const lngresult = result[0].x; // 경도
+          setLat(latresult);
+          setLng(lngresult);
+
+          console.log(lat, lng);
+        } else {
+          console.warn("Failed to get coordinates for address.");
+        }
+      });
+    } catch (error) {
+      console.error("Error handling address:", error);
+    }
+  };
+
   const handleTimeChange = (value: any) => {
     if (value && value.length === 2) {
       const [start, end] = value;
@@ -248,48 +277,50 @@ export default function FruitsRegisterComponentPage(
   const [isReady, setIsReady] = useState(false);
   useEffect(() => {
     if (props.defaultData) {
-      setValue("name", props.defaultData.name || "");
-      setValue("menu", props.defaultData.menu || "");
-      setValue(
-        "marketaddresszonecode",
-        props.defaultData.marketaddresszonecode
-      );
-      setValue("marketaddress", props.defaultData.marketaddress);
-      // setValue("fileUrls", props.defaultData.imageUrl || []);
-      setValue(
-        "marketaddressDetail",
-        props.defaultData.marketaddressDetail || ""
-      );
-      setValue("link", props.defaultData.link || "");
-      setValue("imageUrl", props.defaultData.imageUrl || []);
-      const [defaultStart, defaultEnd] = props.defaultData.openclose.split("-");
-      setDefaultstartTimeString(defaultStart.trim());
-      setDefaultendTimeString(defaultEnd.trim());
-      setValue("openclose", props.defaultData.openclose);
+      try {
+        setValue("name", props.defaultData.name || "");
+        setValue("menu", props.defaultData.menu || "");
+        setValue(
+          "marketaddresszonecode",
+          props.defaultData.marketaddresszonecode || ""
+        );
+        setValue("marketaddress", props.defaultData.marketaddress || "");
+        setValue(
+          "marketaddressDetail",
+          props.defaultData.marketaddressDetail || ""
+        );
+        setValue("link", props.defaultData.link || "");
+        setValue("imageUrl", props.defaultData.imageUrl || []);
 
-      setLat(Number(props.defaultData?.lat));
+        const openclose = props.defaultData.openclose || "00:00 - 00:00";
+        const [defaultStart, defaultEnd] = openclose.split("-");
+        setDefaultstartTimeString(defaultStart.trim());
+        setDefaultendTimeString(defaultEnd.trim());
+        setLat(Number(props.defaultData.lat) || 0);
+        setLng(Number(props.defaultData.lng) || 0);
 
-      setLng(Number(props.defaultData?.lng));
+        if (props.isEdit) {
+          setInitialValues({
+            name: props.defaultData.name || "",
+            menu: props.defaultData.menu || "",
+            marketaddresszonecode:
+              props.defaultData.marketaddresszonecode || "",
+            marketaddress: props.defaultData.marketaddress || "",
+            marketaddressDetail: props.defaultData.marketaddressDetail || "",
+            link: props.defaultData.link || "",
+            openclose: props.defaultData.openclose || "",
+            imageUrl: props.defaultData.imageUrl || [],
+            lat: Number(props.defaultData.lat) || 0,
+            lng: Number(props.defaultData.lng) || 0,
+          });
+        }
 
-      setIsReady(true);
-
-      // 수정하기 페이지의 실제 기본 값 설정 -> 이거랑 비교해서 달라진 내용이 있으면 수정하기 요청을 보내는 거임임
-      if (props.isEdit) {
-        setInitialValues({
-          name: props.defaultData.name || "",
-          menu: props.defaultData.menu || "",
-          marketaddresszonecode: props.defaultData.marketaddresszonecode || "",
-          marketaddress: props.defaultData.marketaddress || "",
-          marketaddressDetail: props.defaultData.marketaddressDetail || "",
-          openclose: props.defaultData.openclose || "",
-          link: props.defaultData.link || "",
-          imageUrl: props.defaultData.imageUrl || [],
-          lat: Number(props.defaultData.lat) || 0,
-          lng: Number(props.defaultData.lng) || 0,
-        });
+        setIsReady(true);
+      } catch (error) {
+        console.error("Error initializing form values:", error);
       }
     }
-  }, [props.defaultData, setValue]);
+  }, [props.isEdit, props.defaultData, setValue]);
 
   // 영업시간 기본값
   const defaultStartTime = dayjs(defaultstartTimeString, "HH:mm");
@@ -386,7 +417,7 @@ export default function FruitsRegisterComponentPage(
     }
   };
 
-  console.log(props.isEdit);
+  // console.log(props.isEdit);
 
   const onSubmit = (data: IFormData) => {
     console.log("onSubmit 호출"); // 로그 추가
