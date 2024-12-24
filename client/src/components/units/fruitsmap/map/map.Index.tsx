@@ -22,6 +22,14 @@ declare const window: typeof globalThis & {
 export default function MapIndexPage() {
   const router = useRouter();
 
+  // 페이지 진입 시 새로고침
+  useEffect(() => {
+    if (!window.location.search.includes("reloaded=true")) {
+      const currentUrl = `${window.location.pathname}?reloaded=true`;
+      window.location.replace(currentUrl); // 새로고침 후 URL에 쿼리 추가
+    }
+  }, []);
+
   useEffect(() => {
     if (router.isReady) {
       const marketId = router.query.id;

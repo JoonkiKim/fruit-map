@@ -1,17 +1,10 @@
-import {
-  collection,
-  addDoc,
-  getFirestore,
-  doc,
-  updateDoc,
-} from "firebase/firestore/lite";
+import { collection, addDoc, doc, updateDoc } from "firebase/firestore/lite";
 
 import _ from "lodash";
 import { useForm } from "react-hook-form";
 import { db } from "../../../../commons/libraries/firebase_fruitmap";
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import { wrapFormAsync } from "../../../../commons/libraries/asyncFunc";
 import {
   AdressInput,
   AdressInputWrapper,
@@ -90,6 +83,14 @@ export default function FruitsRegisterComponentPage(
   props: IFruitsRegisterComponentProps
 ) {
   const router = useRouter();
+
+  // 페이지 진입 시 새로고침
+  useEffect(() => {
+    if (!window.location.search.includes("reloaded=true")) {
+      const currentUrl = `${window.location.pathname}?reloaded=true`;
+      window.location.replace(currentUrl); // 새로고침 후 URL에 쿼리 추가
+    }
+  }, []);
 
   useEffect(() => {
     if (router.isReady) {

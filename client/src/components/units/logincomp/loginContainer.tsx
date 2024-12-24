@@ -29,6 +29,7 @@ import {
 import { auth } from "../../../commons/libraries/firebase_fruitmap";
 import { accessTokenState, loggedInCheck } from "../../../commons/stores";
 import { useEffect, useState } from "react";
+import { wrapFormAsync } from "../../../commons/libraries/asyncFunc";
 
 export const schema = yup.object({
   email: yup
@@ -47,11 +48,7 @@ type IFormData = yup.InferType<typeof schema>;
 
 export default function LoginContainer() {
   const router = useRouter();
-  useEffect(() => {
-    if (router.isReady) {
-      const marketId = router.query.id;
-    }
-  }, [router.isReady, router.query.id]);
+
   const { register, handleSubmit, formState } = useForm<IFormData>({
     resolver: yupResolver(schema),
     mode: "onSubmit",
@@ -112,10 +109,17 @@ export default function LoginContainer() {
       console.error("회원가입 페이지로 이동 중 에러 발생:", error);
     }
   };
+  // 페이지 진입 시 새로고침
+  useEffect(() => {
+    if (!window.location.search.includes("reloaded=true")) {
+      const currentUrl = `${window.location.pathname}?reloaded=true`;
+      window.location.replace(currentUrl); // 새로고침 후 URL에 쿼리 추가
+    }
+  }, []);
 
   return (
     <>
-      <form onSubmit={handleSubmit(onClickLogin)}>
+      <form onSubmit={wrapFormAsync(handleSubmit(onClickLogin))}>
         <LoginWrapper>
           <LoginTitleWrapper>로그인</LoginTitleWrapper>
           <EmailWrapper>
