@@ -1,6 +1,9 @@
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { atom, selector } from "recoil";
 import { firebasefruitapp } from "../libraries/firebase_fruitmap";
+
+// const { persistAtom } = recoilPersist();
+
 // import { refreshAccessToken } from "../libraries/refreshAccessTokenFB";
 
 // // 변수는 atom으로 만들고, 함수는 selector로 만든다
@@ -12,6 +15,7 @@ import { firebasefruitapp } from "../libraries/firebase_fruitmap";
 export const accessTokenState = atom({
   key: "accessTokenState",
   default: "",
+  // effects_UNSTABLE: [persistAtom],
 });
 
 export const loggedInCheck = atom({

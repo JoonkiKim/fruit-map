@@ -98,6 +98,8 @@ export default function FruitsRegisterComponentPage(
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
   const [uuid, setUuid] = useState(uuidv4());
+  const [fileUrls, setFileUrls] = useState(["", "", ""]); // 이미지 상태 초기화
+  const [loading, setLoading] = useState(true);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -240,7 +242,7 @@ export default function FruitsRegisterComponentPage(
 
   // 이미지 업로드 관련
   // DB저장 용
-  const [fileUrls, setFileUrls] = useState(["", "", ""]);
+  // const [fileUrls, setFileUrls] = useState(["", "", ""]);
   // 미리보기 용
   // const [previewImageUrls, setPreviewImageUrls] = useState(["", "", ""]);
   const onChangeFileUrls = (fileUrl: string, index: number): void => {
@@ -260,6 +262,7 @@ export default function FruitsRegisterComponentPage(
   // <수정하기 페이지 관련>
 
   // 수정하기 페이지에서 변경 사항을 확인하기 위한 초기값 상태 관리
+
   const [initialValues, setInitialValues] = useState({
     name: "",
     menu: "",
@@ -272,6 +275,49 @@ export default function FruitsRegisterComponentPage(
     lat: 0,
     lng: 0,
   });
+
+  useEffect(() => {
+    if (!props.isEdit || !props.defaultData) {
+      setLoading(false);
+      return;
+    }
+
+    const initializeForm = () => {
+      try {
+        setValue("name", props.defaultData.name || "");
+        setValue("menu", props.defaultData.menu || "");
+        setValue(
+          "marketaddresszonecode",
+          props.defaultData.marketaddresszonecode || ""
+        );
+        setValue("marketaddress", props.defaultData.marketaddress || "");
+        setValue(
+          "marketaddressDetail",
+          props.defaultData.marketaddressDetail || ""
+        );
+        setValue("link", props.defaultData.link || "");
+        setValue("imageUrl", props.defaultData.imageUrl || []);
+
+        const openclose = props.defaultData.openclose || "00:00 - 00:00";
+        const [defaultStart, defaultEnd] = openclose.split("-");
+
+        setDefaultstartTimeString(defaultStart.trim());
+        setDefaultendTimeString(defaultEnd.trim());
+        setValue("openclose", props.defaultData.openclose || "");
+        setLat(Number(props.defaultData.lat) || 0);
+        setLng(Number(props.defaultData.lng) || 0);
+        setFileUrls([...props.defaultData.imageUrl]);
+
+        // 로딩 완료
+        setLoading(false);
+      } catch (error) {
+        console.error("Error initializing form:", error);
+        setLoading(false);
+      }
+    };
+
+    initializeForm();
+  }, [props.defaultData, props.isEdit, setValue]);
 
   // 기본 값 노출하기기
   const [isReady, setIsReady] = useState(false);
@@ -295,6 +341,8 @@ export default function FruitsRegisterComponentPage(
         const openclose = props.defaultData.openclose || "00:00 - 00:00";
         const [defaultStart, defaultEnd] = openclose.split("-");
         setDefaultstartTimeString(defaultStart.trim());
+
+        setValue("openclose", props.defaultData.openclose || "");
         setDefaultendTimeString(defaultEnd.trim());
         setLat(Number(props.defaultData.lat) || 0);
         setLng(Number(props.defaultData.lng) || 0);
@@ -325,6 +373,22 @@ export default function FruitsRegisterComponentPage(
   // 영업시간 기본값
   const defaultStartTime = dayjs(defaultstartTimeString, "HH:mm");
   const defaultEndTime = dayjs(defaultendTimeString, "HH:mm");
+
+  // 카카오 지도 로드 확인
+  useEffect(() => {
+    if (typeof window !== "undefined" && !window.kakao) {
+      const script = document.createElement("script");
+      script.src =
+        "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=1959f4231719c25f68b4c5b5443d7c37&libraries=services";
+      script.onload = () => {
+        console.log("Kakao Maps SDK loaded");
+      };
+      script.onerror = () => {
+        console.error("Failed to load Kakao Maps SDK");
+      };
+      document.head.appendChild(script);
+    }
+  }, []);
 
   // console.log(defaultStartTime, defaultEndTime);
   // 수정하기 페이지 이미지 기본값

@@ -53,9 +53,9 @@ export default function LoginContainer() {
   });
   const router = useRouter();
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+
   const [, setIsLoggedIn] = useRecoilState(loggedInCheck);
   const [stayLoggedIn, setStayLoggedIn] = useState(false); // 로그인 상태 유지 여부
-  const [loading, setLoading] = useState(false); // 로딩 상태 추가
 
   // "로그인 상태 유지" 클릭 이벤트
   const toggleStayLoggedIn = () => {
@@ -64,7 +64,6 @@ export default function LoginContainer() {
 
   const onClickLogin = async (data: IFormData) => {
     try {
-      setLoading(true); // 로딩 상태 시작
       const persistence = stayLoggedIn
         ? browserLocalPersistence // 브라우저 닫아도 유지
         : browserSessionPersistence; // 브라우저 닫으면 로그아웃
@@ -83,26 +82,16 @@ export default function LoginContainer() {
       setIsLoggedIn(true);
       alert("로그인 성공!");
 
-      if (!router.isReady) {
-        console.warn("라우터가 준비되지 않았습니다. 대기 중...");
-        await new Promise((resolve) => setTimeout(resolve, 500)); // 라우터 준비 대기
-      }
-
+      if (!router.isReady) throw new Error("라우터가 준비되지 않았습니다.");
       await router.push(`/fruitsmap`);
     } catch (error) {
       if (error instanceof Error) alert(error.message);
-    } finally {
-      setLoading(false); // 로딩 상태 종료
     }
   };
 
   const moveToRegister = async () => {
     try {
-      if (!router.isReady) {
-        console.warn("라우터가 준비되지 않았습니다. 대기 중...");
-        await new Promise((resolve) => setTimeout(resolve, 500)); // 라우터 준비 대기
-      }
-
+      if (!router.isReady) throw new Error("라우터가 준비되지 않았습니다.");
       await router.push("/signUp");
     } catch (error) {
       console.error("회원가입 페이지로 이동 중 에러 발생:", error);
@@ -111,7 +100,9 @@ export default function LoginContainer() {
 
   return (
     <>
+      {/* form을 로그인, 회원가입에 사용할때는 onSubmit을 쓰자 */}
       <form onSubmit={handleSubmit(onClickLogin)}>
+        {/* <form onSubmit={wrapFormAsync(handleSubmit(onClickLogin))}> */}
         <LoginWrapper>
           <LoginTitleWrapper>로그인</LoginTitleWrapper>
           <EmailWrapper>
@@ -119,7 +110,7 @@ export default function LoginContainer() {
               type="email"
               {...register("email")}
               placeholder="이메일을 입력해주세요"
-            />
+            />{" "}
             <LoginErrorMsg>{formState.errors.email?.message}</LoginErrorMsg>
           </EmailWrapper>
           <PasswordWrapper>
@@ -127,7 +118,7 @@ export default function LoginContainer() {
               type="password"
               {...register("password")}
               placeholder="비밀번호를 입력해주세요"
-            />
+            />{" "}
             <LoginErrorMsg>{formState.errors.password?.message}</LoginErrorMsg>
           </PasswordWrapper>
 
@@ -137,11 +128,10 @@ export default function LoginContainer() {
             ) : (
               <StayLoginIcon onClick={toggleStayLoggedIn} />
             )}
+
             <StayLogintxt>로그인 상태 유지</StayLogintxt>
           </StayLoginWrapper>
-          <LoginBtn type="submit" disabled={loading}>
-            {loading ? "로그인 중..." : "로그인 하기"}
-          </LoginBtn>
+          <LoginBtn type="submit">로그인 하기</LoginBtn>
           <NavigatorWrapper>
             <Navigatortxt onClick={moveToRegister}>회원가입</Navigatortxt>
           </NavigatorWrapper>

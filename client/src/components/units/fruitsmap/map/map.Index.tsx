@@ -26,6 +26,7 @@ export default function MapIndexPage() {
   const [logInCheck, setLogInCheck] = useRecoilState(loggedInCheck);
   const [isModalAlertOpen, setIsModalAlertOpen] = useState(false);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [marketinfo, setMarketinfo] = useState<MarketInfo[]>([]);
 
   const onToggleAlertModal = () => {
     setIsModalAlertOpen((prev) => !prev);
@@ -51,102 +52,199 @@ export default function MapIndexPage() {
   //   router.reload();
   // }
 
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     try {
+  //       const initializeMap = async () => {
+  //         const fruitshop = collection(
+  //           getFirestore(firebasefruitapp),
+  //           "fruitshop"
+  //         );
+  //         const result = await getDocs(fruitshop);
+
+  //         // 기존 데이터에 문서 ID를 추가한 배열 생성
+  //         const marketinfo: MarketInfo[] = result.docs.map((el) => ({
+  //           ...(el.data() as MarketInfo),
+  //           documentId: el.id,
+  //         }));
+
+  //         // createdAt 기준 최신 데이터 찾기
+  //         const latestPosition = marketinfo.reduce((latest, current) => {
+  //           const latestDate = latest.createdAt?.toDate() || new Date(0); // Timestamp를 Date로 변환
+  //           const currentDate = current.createdAt?.toDate() || new Date(0);
+  //           return currentDate > latestDate ? current : latest;
+  //         }, marketinfo[0]);
+
+  //         const script = document.createElement("script");
+  //         script.src =
+  //           "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=1959f4231719c25f68b4c5b5443d7c37&libraries=services";
+  //         document.head.appendChild(script);
+
+  //         script.onload = () => {
+  //           window.kakao.maps.load(() => {
+  //             const container = document.getElementById("map");
+  //             const options = {
+  //               center: new window.kakao.maps.LatLng(
+  //                 latestPosition?.lat || 37.498822636271,
+  //                 latestPosition?.lng || 126.928393911783
+  //               ),
+  //               level: 3,
+  //             };
+  //             const map = new window.kakao.maps.Map(container, options);
+
+  //             const overlays: any[] = [];
+  //             const closeAllOverlays = () =>
+  //               overlays.forEach((overlay) => overlay.setMap(null));
+
+  //             marketinfo.forEach((position) => {
+  //               const marker = new window.kakao.maps.Marker({
+  //                 position: new window.kakao.maps.LatLng(
+  //                   position.lat,
+  //                   position.lng
+  //                 ),
+  //               });
+  //               marker.setMap(map);
+
+  //               const overlayDiv = document.createElement("div");
+  //               const customOverlay = new window.kakao.maps.CustomOverlay({
+  //                 position: marker.getPosition(),
+  //                 content: overlayDiv,
+  //                 yAnchor: 1.3,
+  //                 clickable: true,
+  //               });
+
+  //               // 조회페이지는 따로 컴포넌트로 관리
+  //               // eslint-disable-next-line react/no-deprecated
+  //               ReactDOM.render(
+  //                 <OverlayContent
+  //                   position={position}
+  //                   onClose={() => customOverlay.setMap(null)}
+  //                   onClickMoveToDetail={onClickMoveToDetail}
+  //                 />,
+  //                 overlayDiv
+  //               );
+
+  //               overlays.push(customOverlay);
+
+  //               window.kakao.maps.event.addListener(marker, "click", () => {
+  //                 closeAllOverlays();
+  //                 customOverlay.setMap(map);
+  //               });
+  //             });
+
+  //             window.kakao.maps.event.addListener(
+  //               map,
+  //               "click",
+  //               closeAllOverlays
+  //             );
+  //           });
+
+  //           setLoading(false); // 로딩 완료
+  //         };
+  //       };
+
+  //       initializeMap();
+  //     } catch (error) {
+  //       if (error instanceof Error) alert(error.message);
+  //     }
+  //   }
+  // }, []);
+
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    const fetchData = async () => {
       try {
-        const initializeMap = async () => {
-          const fruitshop = collection(
-            getFirestore(firebasefruitapp),
-            "fruitshop"
-          );
-          const result = await getDocs(fruitshop);
+        const fruitshop = collection(
+          getFirestore(firebasefruitapp),
+          "fruitshop"
+        );
+        const result = await getDocs(fruitshop);
 
-          // 기존 데이터에 문서 ID를 추가한 배열 생성
-          const marketinfo: MarketInfo[] = result.docs.map((el) => ({
-            ...(el.data() as MarketInfo),
-            documentId: el.id,
-          }));
+        // 기존 데이터에 문서 ID를 추가한 배열 생성
+        const marketinfoData: MarketInfo[] = result.docs.map((el) => ({
+          ...(el.data() as MarketInfo),
+          documentId: el.id,
+        }));
 
-          // createdAt 기준 최신 데이터 찾기
-          const latestPosition = marketinfo.reduce((latest, current) => {
-            const latestDate = latest.createdAt?.toDate() || new Date(0); // Timestamp를 Date로 변환
-            const currentDate = current.createdAt?.toDate() || new Date(0);
-            return currentDate > latestDate ? current : latest;
-          }, marketinfo[0]);
-
-          const script = document.createElement("script");
-          script.src =
-            "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=1959f4231719c25f68b4c5b5443d7c37&libraries=services";
-          document.head.appendChild(script);
-
-          script.onload = () => {
-            window.kakao.maps.load(() => {
-              const container = document.getElementById("map");
-              const options = {
-                center: new window.kakao.maps.LatLng(
-                  latestPosition?.lat || 37.498822636271,
-                  latestPosition?.lng || 126.928393911783
-                ),
-                level: 3,
-              };
-              const map = new window.kakao.maps.Map(container, options);
-
-              const overlays: any[] = [];
-              const closeAllOverlays = () =>
-                overlays.forEach((overlay) => overlay.setMap(null));
-
-              marketinfo.forEach((position) => {
-                const marker = new window.kakao.maps.Marker({
-                  position: new window.kakao.maps.LatLng(
-                    position.lat,
-                    position.lng
-                  ),
-                });
-                marker.setMap(map);
-
-                const overlayDiv = document.createElement("div");
-                const customOverlay = new window.kakao.maps.CustomOverlay({
-                  position: marker.getPosition(),
-                  content: overlayDiv,
-                  yAnchor: 1.3,
-                  clickable: true,
-                });
-
-                // 조회페이지는 따로 컴포넌트로 관리
-                // eslint-disable-next-line react/no-deprecated
-                ReactDOM.render(
-                  <OverlayContent
-                    position={position}
-                    onClose={() => customOverlay.setMap(null)}
-                    onClickMoveToDetail={onClickMoveToDetail}
-                  />,
-                  overlayDiv
-                );
-
-                overlays.push(customOverlay);
-
-                window.kakao.maps.event.addListener(marker, "click", () => {
-                  closeAllOverlays();
-                  customOverlay.setMap(map);
-                });
-              });
-
-              window.kakao.maps.event.addListener(
-                map,
-                "click",
-                closeAllOverlays
-              );
-            });
-
-            setLoading(false); // 로딩 완료
-          };
-        };
-
-        initializeMap();
+        setMarketinfo(marketinfoData);
+        return marketinfoData;
       } catch (error) {
-        if (error instanceof Error) alert(error.message);
+        console.error("Error fetching market data:", error);
+        return [];
       }
-    }
+    };
+
+    const initializeMap = async () => {
+      const marketinfoData = await fetchData();
+
+      const latestPosition = marketinfoData.reduce((latest, current) => {
+        const latestDate = latest.createdAt?.toDate() || new Date(0);
+        const currentDate = current.createdAt?.toDate() || new Date(0);
+        return currentDate > latestDate ? current : latest;
+      }, marketinfoData[0]);
+
+      const script = document.createElement("script");
+      script.src =
+        "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=1959f4231719c25f68b4c5b5443d7c37&libraries=services";
+      document.head.appendChild(script);
+
+      script.onload = () => {
+        window.kakao.maps.load(() => {
+          const container = document.getElementById("map");
+          const options = {
+            center: new window.kakao.maps.LatLng(
+              latestPosition?.lat || 37.498822636271,
+              latestPosition?.lng || 126.928393911783
+            ),
+            level: 3,
+          };
+          const map = new window.kakao.maps.Map(container, options);
+
+          const overlays: any[] = [];
+          const closeAllOverlays = () =>
+            overlays.forEach((overlay) => overlay.setMap(null));
+
+          marketinfoData.forEach((position) => {
+            const marker = new window.kakao.maps.Marker({
+              position: new window.kakao.maps.LatLng(
+                position.lat,
+                position.lng
+              ),
+            });
+            marker.setMap(map);
+
+            const overlayDiv = document.createElement("div");
+            const customOverlay = new window.kakao.maps.CustomOverlay({
+              position: marker.getPosition(),
+              content: overlayDiv,
+              yAnchor: 1.3,
+              clickable: true,
+            });
+            // eslint-disable-next-line react/no-deprecated
+            ReactDOM.render(
+              <OverlayContent
+                position={position}
+                onClose={() => customOverlay.setMap(null)}
+                onClickMoveToDetail={onClickMoveToDetail}
+              />,
+              overlayDiv
+            );
+
+            overlays.push(customOverlay);
+
+            window.kakao.maps.event.addListener(marker, "click", () => {
+              closeAllOverlays();
+              customOverlay.setMap(map);
+            });
+          });
+
+          window.kakao.maps.event.addListener(map, "click", closeAllOverlays);
+        });
+
+        setLoading(false); // 로딩 완료
+      };
+    };
+
+    initializeMap();
   }, []);
 
   console.log(loading);
@@ -188,12 +286,6 @@ export default function MapIndexPage() {
             </NewMarketButton>
           )}
         </>
-        {/* )} */}
-        {logInCheck && (
-          <NewMarketButton onClick={onClickNewMarket}>
-            가게 등록하기
-          </NewMarketButton>
-        )}
       </MainContentWrapper>
     </div>
   );
