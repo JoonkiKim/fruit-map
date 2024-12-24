@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   RegisterBtn,
   RegisterDivWrapper,
@@ -48,6 +48,12 @@ export default function SignUpContainer() {
     mode: "onChange",
   });
   const router = useRouter();
+
+  useEffect(() => {
+    if (router.isReady) {
+      const marketId = router.query.id;
+    }
+  }, [router.isReady, router.query.id]);
 
   const [isModalAlertOpen, setIsModalAlertOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");

@@ -89,6 +89,13 @@ interface IFruitsRegisterComponentProps {
 export default function FruitsRegisterComponentPage(
   props: IFruitsRegisterComponentProps
 ) {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.isReady) {
+      const marketId = router.query.id;
+    }
+  }, [router.isReady, router.query.id]);
   const { register, handleSubmit, formState, setValue, trigger } =
     useForm<IFormData>({
       resolver: yupResolver(schema),
@@ -254,7 +261,12 @@ export default function FruitsRegisterComponentPage(
   };
 
   // 로고 클릭시 메인 지도 페이지로 이동
-  const router = useRouter();
+
+  useEffect(() => {
+    if (router.isReady) {
+      const marketId = router.query.id;
+    }
+  }, [router.isReady, router.query.id]);
   const onLogoClick = () => {
     router.push(`/fruitsmap`);
   };

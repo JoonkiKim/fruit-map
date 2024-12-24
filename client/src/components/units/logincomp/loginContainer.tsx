@@ -28,7 +28,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../../commons/libraries/firebase_fruitmap";
 import { accessTokenState, loggedInCheck } from "../../../commons/stores";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const schema = yup.object({
   email: yup
@@ -46,11 +46,16 @@ export const schema = yup.object({
 type IFormData = yup.InferType<typeof schema>;
 
 export default function LoginContainer() {
+  const router = useRouter();
+  useEffect(() => {
+    if (router.isReady) {
+      const marketId = router.query.id;
+    }
+  }, [router.isReady, router.query.id]);
   const { register, handleSubmit, formState } = useForm<IFormData>({
     resolver: yupResolver(schema),
     mode: "onSubmit",
   });
-  const router = useRouter();
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [, setIsLoggedIn] = useRecoilState(loggedInCheck);
   const [stayLoggedIn, setStayLoggedIn] = useState(false); // 로그인 상태 유지 여부

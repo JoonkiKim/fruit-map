@@ -22,6 +22,11 @@ declare const window: typeof globalThis & {
 export default function MapIndexPage() {
   const router = useRouter();
 
+  useEffect(() => {
+    if (router.isReady) {
+      const marketId = router.query.id;
+    }
+  }, [router.isReady, router.query.id]);
   const [modalMessage, setModalMessage] = useState("");
   const [logInCheck, setLogInCheck] = useRecoilState(loggedInCheck);
   const [isModalAlertOpen, setIsModalAlertOpen] = useState(false);
@@ -245,7 +250,7 @@ export default function MapIndexPage() {
     };
 
     initializeMap();
-  }, []);
+  }, [router.query]);
 
   console.log(loading);
 
