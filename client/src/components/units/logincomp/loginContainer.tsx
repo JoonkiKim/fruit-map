@@ -27,11 +27,11 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../../../commons/libraries/firebase_fruitmap";
-import { accessTokenState, loggedInCheck } from "../../../commons/stores";
-import { useEffect, useState } from "react";
+import { loggedInCheck } from "../../../commons/stores";
+import { useState } from "react";
 import { wrapFormAsync } from "../../../commons/libraries/asyncFunc";
 
-export const schema = yup.object({
+const schema = yup.object({
   email: yup
     .string()
     .email("이메일 형식에 적합하지 않습니다")
@@ -53,7 +53,7 @@ export default function LoginContainer() {
     resolver: yupResolver(schema),
     mode: "onSubmit",
   });
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  // const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [, setIsLoggedIn] = useRecoilState(loggedInCheck);
   const [stayLoggedIn, setStayLoggedIn] = useState(false); // 로그인 상태 유지 여부
   const [loading, setLoading] = useState(false); // 로딩 상태 추가
@@ -79,7 +79,7 @@ export default function LoginContainer() {
       );
 
       const token = await userCredential.user.getIdToken();
-      setAccessToken(token); // Recoil 상태에 저장
+      // setAccessToken(token); // Recoil 상태에 저장
 
       setIsLoggedIn(true);
       alert("로그인 성공!");
@@ -109,13 +109,6 @@ export default function LoginContainer() {
       console.error("회원가입 페이지로 이동 중 에러 발생:", error);
     }
   };
-  // 페이지 진입 시 새로고침
-  useEffect(() => {
-    if (!window.location.search.includes("reloaded=true")) {
-      const currentUrl = `${window.location.pathname}?reloaded=true`;
-      window.location.replace(currentUrl); // 새로고침 후 URL에 쿼리 추가
-    }
-  }, []);
 
   return (
     <>

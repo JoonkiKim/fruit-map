@@ -1,3 +1,5 @@
+// 리코일 안씀
+
 import { collection, addDoc, doc, updateDoc } from "firebase/firestore/lite";
 
 import _ from "lodash";
@@ -37,7 +39,6 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import UploadsFruitsMarket from "../../../commons/imageUpload/Upload01.container";
 import { MarketInfo } from "./register.types";
-// import { doc, updateDoc } from "firebase/firestore";
 
 declare const window: typeof globalThis & {
   kakao: any;
@@ -83,14 +84,6 @@ export default function FruitsRegisterComponentPage(
   props: IFruitsRegisterComponentProps
 ) {
   const router = useRouter();
-
-  // 페이지 진입 시 새로고침
-  useEffect(() => {
-    if (!window.location.search.includes("reloaded=true")) {
-      const currentUrl = `${window.location.pathname}?reloaded=true`;
-      window.location.replace(currentUrl); // 새로고침 후 URL에 쿼리 추가
-    }
-  }, []);
 
   useEffect(() => {
     if (router.isReady) {
