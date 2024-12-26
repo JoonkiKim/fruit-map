@@ -36,9 +36,23 @@ export default function MapIndexPage() {
     setIsModalAlertOpen((prev) => !prev);
   };
 
+  // const onClickMoveToDetail = (event: MouseEvent<HTMLDivElement>) => {
+  //   if (event.currentTarget instanceof HTMLDivElement) {
+  //     try {
+  //       router.push(`/fruitsmap/${event.currentTarget.id}`);
+  //     } catch (error) {
+  //       if (error instanceof Error) setModalMessage(error.message);
+  //       onToggleAlertModal();
+  //     }
+  //   }
+  // };
+
   const onClickMoveToDetail = (event: MouseEvent<HTMLDivElement>) => {
     if (event.currentTarget instanceof HTMLDivElement) {
       try {
+        if (!event.currentTarget.id)
+          throw new Error("상세 페이지로 이동할 수 없습니다.");
+
         router.push(`/fruitsmap/${event.currentTarget.id}`);
       } catch (error) {
         if (error instanceof Error) setModalMessage(error.message);
@@ -69,6 +83,9 @@ export default function MapIndexPage() {
   const onClickNewMarket = () => {
     router.push("/fruitsmap/new"); // 가게 등록 페이지로 이동
   };
+
+  const user = auth?.currentUser;
+  console.log("로그인 여부는" + isLoggedIn);
 
   useEffect(() => {
     const fetchData = async () => {

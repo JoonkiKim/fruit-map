@@ -4,9 +4,9 @@ import type { AppProps } from "next/app";
 import ApolloSetting from "../src/components/commons/layout/apollo";
 import { Global } from "@emotion/react";
 import { globalStyles } from "../src/commons/styles/globalStyles";
-import { RecoilRoot, useRecoilState } from "recoil";
+import { RecoilRoot } from "recoil";
 import Layout from "../src/components/commons/layout";
-import { Auth } from "firebase/auth";
+// import { Auth } from "firebase/auth";
 // import { loggedInCheck } from "../src/commons/stores";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
         {/* 이렇게 RecoilRoot로 전체를 감싸주면 글로벌 스테이트를 다들 공유할 수 있게 된다  */}
         <ApolloSetting>
           <>
-            <Global styles={globalStyles} />
+            {/* <Global styles={globalStyles} /> */}
 
             <Layout>
               <Component {...pageProps} />

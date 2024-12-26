@@ -22,13 +22,36 @@ interface IApolloSettingProps {
 }
 
 export default function ApolloSetting(props: IApolloSettingProps) {
-  const router = useRouter();
+  // const router = useRouter();
 
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+
   const [logInCheck, setLogInCheck] = useRecoilState(loggedInCheck);
-  if (accessToken === undefined || logInCheck === undefined) {
-    return <div>로딩 중...</div>;
-  }
+  // 기본값 설정: Firebase 인증 상태 확인 후 AccessToken 초기화
+  useEffect(() => {
+    const initializeAccessToken = async () => {
+      try {
+        const user = auth?.currentUser;
+        if (user) {
+          const token = await user.getIdToken();
+
+          setAccessToken(token);
+          setLogInCheck(true);
+          console.log("아폴로세팅에서 전함 - 로그인 되어있음");
+        } else {
+          setAccessToken(""); // 기본값
+          setLogInCheck(false);
+
+          console.log("아폴로세팅에서 전함 - user없음");
+        }
+      } catch (error) {
+        console.error("Failed to initialize accessToken:", error);
+        setAccessToken(""); // 기본값으로 초기화
+      }
+    };
+
+    initializeAccessToken();
+  }, [setAccessToken, setLogInCheck]);
 
   // 파이어베이스에서는 로컬스토리지에 저장하는 방식으로 로그인 유지
 
@@ -62,7 +85,10 @@ export default function ApolloSetting(props: IApolloSettingProps) {
         const token = await user.getIdToken();
         setAccessToken(token);
         setLogInCheck(true);
-
+        console.log(logInCheck + "다시 로그인 됨");
+        if (accessToken) {
+          console.log("토큰 다시 생성됨");
+        }
         const newClient = new ApolloClient({
           link: ApolloLink.from([
             setContext(() => ({
@@ -80,7 +106,7 @@ export default function ApolloSetting(props: IApolloSettingProps) {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [logInCheck, accessToken]);
 
   const uploadLink = createUploadLink({
     headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
