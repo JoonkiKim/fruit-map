@@ -25,7 +25,7 @@ export default function Layout(props: ILayoutProps) {
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      {isHiddenHeader && <LayoutHeader />}
+      {!isHiddenHeader && <LayoutHeader />}
       <div>{props.children}</div>
     </div>
   );
