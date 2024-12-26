@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValueLoadable } from "recoil";
 import { loggedInCheck, marketinfoGlobal } from "../../../../commons/stores";
@@ -40,18 +41,18 @@ export default function LayoutHeader() {
   //   }
   // }, [marketinfo]);
 
-  useEffect(() => {
-    // 특정 경로의 페이지를 미리 가져옵니다.
-    router.prefetch("/fruitsmap");
-    router.prefetch("/login");
-  }, [router]);
-  const onLogoClick = () => {
-    router.push("/fruitsmap");
-  };
+  // useEffect(() => {
+  //   // 특정 경로의 페이지를 미리 가져옵니다.
+  //   router.prefetch("/fruitsmap");
+  //   router.prefetch("/login");
+  // }, [router]);
+  // const onLogoClick = () => {
+  //   router.push("/fruitsmap");
+  // };
 
-  const onClickMovetoLogin = () => {
-    router.push("/login");
-  };
+  // const onClickMovetoLogin = () => {
+  //   router.push("/login");
+  // };
 
   // 로그아웃 함수
   const onClickLogout = async () => {
@@ -61,7 +62,8 @@ export default function LayoutHeader() {
       setIsLoggedIn(false); // 로그인 상태 초기화
       setIsModalAlertOpen((prev) => !prev);
       router.reload(); // 화면 전체 새로고침
-      router.push("/fruitsmap");
+      console.log(isLoggedIn);
+      // router.push("/fruitsmap");
     } catch (error) {
       alert("로그아웃에 실패했습니다.");
     }
@@ -71,11 +73,16 @@ export default function LayoutHeader() {
     <Wrapper>
       <CompWrapper>
         <LogoWrapper>
-          <LogoImg src="/images/fruit.png" onClick={onLogoClick}></LogoImg>
+          {/* <LogoImg src="/images/fruit.png" onClick={onLogoClick}></LogoImg> */}
+          <Link href="/fruitsmap" passHref>
+            <a>
+              <LogoImg src="/images/fruit.png" alt="과일 판매점 지도 로고" />
+            </a>
+          </Link>
           <LogoTxt>과일판매점 지도</LogoTxt>
         </LogoWrapper>
-
-        {/* {isLoggedIn && (
+        {/* 
+        {isLoggedIn && (
           <RecommendWrapper>
             {marketinfo.state === "hasValue" && marketinfo.contents.length > 0
               ? randomIndex !== null
@@ -93,9 +100,9 @@ export default function LayoutHeader() {
             <LogOutWrapper onClick={onToggleAlertModal}>로그아웃</LogOutWrapper>
           </HeaderRightWrapper>
         ) : (
-          <LogInCheckWrapper onClick={onClickMovetoLogin}>
-            로그인/회원가입
-          </LogInCheckWrapper>
+          <Link href="/login" passHref>
+            <LogInCheckWrapper as="a">로그인/회원가입</LogInCheckWrapper>
+          </Link>
         )}
       </CompWrapper>
 
@@ -108,6 +115,12 @@ export default function LayoutHeader() {
         >
           <span>로그아웃 하시겠습니까?</span>
         </ModalAlert>
+      )}
+
+      {!isLoggedIn && (
+        <Link href="/fruitsmap" passHref>
+          <a style={{ display: "none" }}></a>
+        </Link>
       )}
     </Wrapper>
   );

@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import { MouseEvent, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import {
@@ -46,14 +47,14 @@ export default function MapIndexPage() {
     }
   };
 
-  useEffect(() => {
-    // 특정 경로의 페이지를 미리 가져옵니다.
-    router.prefetch("/fruitsmap/new");
-  }, [router]);
+  // useEffect(() => {
+  //   // 특정 경로의 페이지를 미리 가져옵니다.
+  //   router.prefetch("/fruitsmap/new");
+  // }, [router]);
 
-  const onClickNewMarket = () => {
-    router.push("/fruitsmap/new"); // 가게 등록 페이지로 이동
-  };
+  // const onClickNewMarket = () => {
+  //   router.push("/fruitsmap/new"); // 가게 등록 페이지로 이동
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -187,9 +188,9 @@ export default function MapIndexPage() {
         <>
           <MapWrapper id="map"></MapWrapper>
           {logInCheck && (
-            <NewMarketButton onClick={onClickNewMarket}>
-              가게 등록하기
-            </NewMarketButton>
+            <Link href="/fruitsmap/new" passHref>
+              <NewMarketButton as="a">가게 등록하기</NewMarketButton>
+            </Link>
           )}
         </>
       </MainContentWrapper>

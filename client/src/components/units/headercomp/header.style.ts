@@ -48,6 +48,8 @@ export const LogoWrapper = styled.div`
 
 export const LogInCheckWrapper = styled.div`
   display: flex;
+  color: black;
+  text-decoration-line: none;
   flex-direction: row;
   justify-content: center;
   align-items: center;

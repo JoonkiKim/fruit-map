@@ -28,7 +28,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../../commons/libraries/firebase_fruitmap";
 import { loggedInCheck } from "../../../commons/stores";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { wrapFormAsync } from "../../../commons/libraries/asyncFunc";
 
 const schema = yup.object({
@@ -57,6 +57,14 @@ export default function LoginContainer() {
   const [, setIsLoggedIn] = useRecoilState(loggedInCheck);
   const [stayLoggedIn, setStayLoggedIn] = useState(false); // 로그인 상태 유지 여부
   const [loading, setLoading] = useState(false); // 로딩 상태 추가
+  const isMounted = useRef(true); // 컴포넌트 마운트 상태 추적
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false; // 언마운트 시 플래그 설정
+    };
+  }, []);
 
   // "로그인 상태 유지" 클릭 이벤트
   const toggleStayLoggedIn = () => {
@@ -69,12 +77,47 @@ export default function LoginContainer() {
     router.prefetch("/signUp");
   }, [router]);
 
+  // const onClickLogin = async (data: IFormData) => {
+  //   try {
+  //     setLoading(true); // 로딩 상태 시작
+  //     const persistence = stayLoggedIn
+  //       ? browserLocalPersistence // 브라우저 닫아도 유지
+  //       : browserSessionPersistence; // 브라우저 닫으면 로그아웃
+
+  //     await setPersistence(auth, persistence);
+
+  //     const userCredential = await signInWithEmailAndPassword(
+  //       auth,
+  //       data.email,
+  //       data.password
+  //     );
+
+  //     const token = await userCredential.user.getIdToken();
+  //     // setAccessToken(token); // Recoil 상태에 저장
+
+  //     setIsLoggedIn(true);
+  //     alert("로그인 성공!");
+
+  //     if (!router.isReady) {
+  //       console.warn("라우터가 준비되지 않았습니다. 대기 중...");
+  //       await new Promise((resolve) => setTimeout(resolve, 500)); // 라우터 준비 대기
+  //     }
+
+  //     await router.push("/fruitsmap");
+  //   } catch (error) {
+  //     if (error instanceof Error) alert(error.message);
+  //   } finally {
+  //     setLoading(false); // 로딩 상태 종료
+  //   }
+  // };
+
   const onClickLogin = async (data: IFormData) => {
     try {
-      setLoading(true); // 로딩 상태 시작
+      setLoading(true);
+
       const persistence = stayLoggedIn
-        ? browserLocalPersistence // 브라우저 닫아도 유지
-        : browserSessionPersistence; // 브라우저 닫으면 로그아웃
+        ? browserLocalPersistence
+        : browserSessionPersistence;
 
       await setPersistence(auth, persistence);
 
@@ -85,34 +128,25 @@ export default function LoginContainer() {
       );
 
       const token = await userCredential.user.getIdToken();
-      // setAccessToken(token); // Recoil 상태에 저장
-
       setIsLoggedIn(true);
+
       alert("로그인 성공!");
 
-      if (!router.isReady) {
-        console.warn("라우터가 준비되지 않았습니다. 대기 중...");
-        await new Promise((resolve) => setTimeout(resolve, 500)); // 라우터 준비 대기
+      if (isMounted.current) {
+        await router.push("/fruitsmap");
       }
-
-      await router.push("/fruitsmap");
     } catch (error) {
       if (error instanceof Error) alert(error.message);
     } finally {
-      setLoading(false); // 로딩 상태 종료
+      if (isMounted.current) {
+        setLoading(false);
+      }
     }
   };
 
   const moveToRegister = async () => {
-    try {
-      if (!router.isReady) {
-        console.warn("라우터가 준비되지 않았습니다. 대기 중...");
-        await new Promise((resolve) => setTimeout(resolve, 500)); // 라우터 준비 대기
-      }
-
+    if (isMounted.current) {
       await router.push("/signUp");
-    } catch (error) {
-      console.error("회원가입 페이지로 이동 중 에러 발생:", error);
     }
   };
 

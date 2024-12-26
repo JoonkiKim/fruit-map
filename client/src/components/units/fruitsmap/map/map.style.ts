@@ -76,6 +76,7 @@ export const NewMarketButton = styled.button`
   font-size: 16px;
   font-weight: bold;
   z-index: 100;
+  text-decoration-line: none;
   cursor: pointer;
   &:hover {
     background-color: #c70039;

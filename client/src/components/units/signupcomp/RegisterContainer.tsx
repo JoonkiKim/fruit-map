@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   RegisterBtn,
@@ -49,11 +50,11 @@ export default function SignUpContainer() {
   });
   const router = useRouter();
 
-  useEffect(() => {
-    if (router.isReady) {
-      const marketId = router.query.id;
-    }
-  }, [router.isReady, router.query.id]);
+  // useEffect(() => {
+  //   if (router.isReady) {
+  //     const marketId = router.query.id;
+  //   }
+  // }, [router.isReady, router.query.id]);
 
   const [isModalAlertOpen, setIsModalAlertOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -74,17 +75,16 @@ export default function SignUpContainer() {
         displayName: data.name,
       });
       console.log(auth.currentUser);
-      alert("회원가입 성공!");
+      onToggleAlertModal();
+
+      // router.push("/login");
     } catch (error) {
       alert(error.message);
     }
   };
 
-  useEffect(() => {
-    router.prefetch("/login");
-  }, [router]);
-  const moveToLogin = () => {
-    router.push("/login");
+  const moveToMain = () => {
+    router.push("/fruitsmap");
   };
 
   return (
@@ -141,14 +141,11 @@ export default function SignUpContainer() {
           <RegisterBtn type="submit">회원가입하기</RegisterBtn>
         </form>
       </RegisterWrapper>
-
       <ModalAlert
         open={isModalAlertOpen}
-        onOk={moveToLogin}
+        onOk={moveToMain} // 모달 닫기
         cancelButtonProps={{ style: { display: "none" } }}
-      >
-        <span>{modalMessage}</span>
-      </ModalAlert>
+      ></ModalAlert>
     </>
   );
 }

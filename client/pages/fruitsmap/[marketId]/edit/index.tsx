@@ -7,9 +7,7 @@ import { MarketInfo } from "../../../../src/components/units/fruitsmap/register/
 import FruitsRegisterComponentPage from "../../../../src/components/units/fruitsmap/register/register.Index";
 
 export default function FruitsMapPage() {
-  const [defaultData, setDefaultData] = useState<MarketInfo | undefined>(
-    undefined
-  );
+  const [defaultData, setDefaultData] = useState<MarketInfo>();
 
   const router = useRouter();
 
