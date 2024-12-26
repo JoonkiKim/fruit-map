@@ -50,12 +50,6 @@ export default function SignUpContainer() {
   });
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (router.isReady) {
-  //     const marketId = router.query.id;
-  //   }
-  // }, [router.isReady, router.query.id]);
-
   const [isModalAlertOpen, setIsModalAlertOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 

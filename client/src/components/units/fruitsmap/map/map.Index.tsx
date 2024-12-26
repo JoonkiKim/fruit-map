@@ -75,14 +75,14 @@ export default function MapIndexPage() {
     checkLogin();
   }, [setIsLoggedIn]);
 
-  useEffect(() => {
-    // 특정 경로의 페이지를 미리 가져옵니다.
-    router.prefetch("/fruitsmap/new");
-  }, [router]);
+  // useEffect(() => {
+  //   // 특정 경로의 페이지를 미리 가져옵니다.
+  //   router.prefetch("/fruitsmap/new");
+  // }, [router]);
 
-  const onClickNewMarket = () => {
-    router.push("/fruitsmap/new"); // 가게 등록 페이지로 이동
-  };
+  // const onClickNewMarket = () => {
+  //   router.push("/fruitsmap/new"); // 가게 등록 페이지로 이동
+  // };
 
   const user = auth?.currentUser;
   console.log("로그인 여부는" + isLoggedIn);
@@ -201,7 +201,6 @@ export default function MapIndexPage() {
   return (
     <div>
       <Head>
-        <link rel="prefetch" href="./" />
         <link
           rel="preload"
           href="https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=1959f4231719c25f68b4c5b5443d7c37&libraries=services"

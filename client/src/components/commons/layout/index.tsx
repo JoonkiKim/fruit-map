@@ -1,30 +1,31 @@
 // import { useRouter } from "next/router";
 
+import { useRouter } from "next/router";
 import LayoutHeader from "./header";
 
-// const HIDDEN_HEADERS = [
-//   "/fruitsmap/new", // 새 등록 페이지
-//   "/fruitsmap/[marketId]/edit", // 동적 경로 편집 페이지
-//   "/login",
-//   "/signUp",
-// ];
+const HIDDEN_HEADERS = [
+  "/fruitsmap/new", // 새 등록 페이지
+  "/fruitsmap/[marketId]/edit", // 동적 경로 편집 페이지
+  "/login",
+  "/signUp",
+];
 
 interface ILayoutProps {
   children: JSX.Element;
 }
 
 export default function Layout(props: ILayoutProps) {
-  // const router = useRouter();
-  // // 아래의 asPath를 찍어보면 지금 주소가 어디인지 확인할 수 있다
-  // console.log(router.asPath);
+  const router = useRouter();
+  // 아래의 asPath를 찍어보면 지금 주소가 어디인지 확인할 수 있다
+  console.log(router.asPath);
 
-  // const isHiddenHeader = HIDDEN_HEADERS.includes(router.pathname);
+  const isHiddenHeader = HIDDEN_HEADERS.includes(router.pathname);
 
   return (
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <LayoutHeader />
+      {isHiddenHeader && <LayoutHeader />}
       <div>{props.children}</div>
     </div>
   );

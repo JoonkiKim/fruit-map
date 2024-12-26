@@ -71,11 +71,11 @@ export default function LoginContainer() {
     setStayLoggedIn((prev) => !prev);
   };
 
-  useEffect(() => {
-    // 특정 경로의 페이지를 미리 가져옵니다.
-    router.prefetch("/fruitsmap");
-    router.prefetch("/signUp");
-  }, [router]);
+  // useEffect(() => {
+  //   // 특정 경로의 페이지를 미리 가져옵니다.
+  //   router.prefetch("/fruitsmap");
+  //   router.prefetch("/signUp");
+  // }, [router]);
 
   // const onClickLogin = async (data: IFormData) => {
   //   try {
