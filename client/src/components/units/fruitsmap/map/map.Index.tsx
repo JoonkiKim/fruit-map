@@ -15,8 +15,8 @@ import {
 } from "../../../../commons/libraries/firebase_fruitmap";
 import OverlayContent from "./map.detail";
 import { useRouter } from "next/router";
-// import { useRecoilState } from "recoil";
-// import { loggedInCheck } from "../../../../commons/stores";
+import { useRecoilState } from "recoil";
+import { loggedInCheck } from "../../../../commons/stores";
 import { MarketInfo } from "../register/register.types";
 
 declare const window: typeof globalThis & {
@@ -27,7 +27,7 @@ export default function MapIndexPage() {
   const router = useRouter();
 
   const [modalMessage, setModalMessage] = useState("");
-  // const [logInCheck, setLogInCheck] = useRecoilState(loggedInCheck);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loggedInCheck);
   const [isModalAlertOpen, setIsModalAlertOpen] = useState(false);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const [marketinfo, setMarketinfo] = useState<MarketInfo[]>([]);
@@ -47,14 +47,28 @@ export default function MapIndexPage() {
     }
   };
 
-  // useEffect(() => {
-  //   // 특정 경로의 페이지를 미리 가져옵니다.
-  //   router.prefetch("/fruitsmap/new");
-  // }, [router]);
+  useEffect(() => {
+    // 비동기 작업 완료 후 상태 업데이트
+    const checkLogin = async () => {
+      try {
+        const user = await auth.currentUser; // Firebase 현재 사용자 가져오기
+        setIsLoggedIn(!!user); // 사용자 존재 여부를 상태로 설정
+      } catch (error) {
+        console.error("Error checking login state:", error);
+      }
+    };
 
-  // const onClickNewMarket = () => {
-  //   router.push("/fruitsmap/new"); // 가게 등록 페이지로 이동
-  // };
+    checkLogin();
+  }, [setIsLoggedIn]);
+
+  useEffect(() => {
+    // 특정 경로의 페이지를 미리 가져옵니다.
+    router.prefetch("/fruitsmap/new");
+  }, [router]);
+
+  const onClickNewMarket = () => {
+    router.push("/fruitsmap/new"); // 가게 등록 페이지로 이동
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,7 +93,7 @@ export default function MapIndexPage() {
       }
     };
 
-    const initializeMap = async () => {
+    const initializeMap = async (retryCount = 3, delay = 100) => {
       const marketinfoData = await fetchData();
 
       const latestPosition = marketinfoData.reduce((latest, current) => {
@@ -91,11 +105,21 @@ export default function MapIndexPage() {
       const script = document.createElement("script");
       script.src =
         "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=1959f4231719c25f68b4c5b5443d7c37&libraries=services";
-      document.head.appendChild(script);
+      script.async = true;
 
+      document.head.appendChild(script);
       script.onload = () => {
         window.kakao.maps.load(() => {
           const container = document.getElementById("map");
+          if (!container) {
+            console.error("Map container not found. Retrying...");
+            if (retryCount > 0) {
+              setTimeout(() => initializeMap(retryCount - 1, delay), delay);
+            } else {
+              alert("지도를 불러오지 못했습니다. 페이지를 새로고침 해주세요.");
+            }
+            return;
+          }
           const options = {
             center: new window.kakao.maps.LatLng(
               latestPosition?.lat || 37.498822636271,
@@ -150,7 +174,9 @@ export default function MapIndexPage() {
       };
     };
 
-    initializeMap();
+    initializeMap().catch((error) => {
+      console.error("Error initializing map:", error);
+    });
   }, [router.query]);
 
   console.log(loading);
@@ -182,16 +208,19 @@ export default function MapIndexPage() {
       </Head>
 
       <MainContentWrapper>
-        {/* {loading ? ( // 로딩 중일 때 메시지 표시
-          <LoadingWrapper>로딩중...</LoadingWrapper>
-        ) : ( */}
         <>
-          <MapWrapper id="map"></MapWrapper>
-          {/* {logInCheck && ( */}
-          <Link href="/fruitsmap/new" passHref>
-            <NewMarketButton as="a">가게 등록하기</NewMarketButton>
-          </Link>
-          {/* // )} */}
+          {loading ? (
+            <LoadingWrapper>로딩중...</LoadingWrapper>
+          ) : (
+            <>
+              <MapWrapper id="map"></MapWrapper>
+              {isLoggedIn && (
+                <Link href="/fruitsmap/new" passHref>
+                  <NewMarketButton as="a">가게 등록하기</NewMarketButton>
+                </Link>
+              )}
+            </>
+          )}
         </>
       </MainContentWrapper>
     </div>

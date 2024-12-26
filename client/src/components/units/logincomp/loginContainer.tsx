@@ -14,7 +14,7 @@ import {
   StayLoginWrapper,
 } from "./loginStyles";
 
-// import { useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
@@ -54,7 +54,7 @@ export default function LoginContainer() {
     mode: "onSubmit",
   });
   // const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
-  // const [, setIsLoggedIn] = useRecoilState(loggedInCheck);
+  const [, setIsLoggedIn] = useRecoilState(loggedInCheck);
   const [stayLoggedIn, setStayLoggedIn] = useState(false); // 로그인 상태 유지 여부
   const [loading, setLoading] = useState(false); // 로딩 상태 추가
   const isMounted = useRef(true); // 컴포넌트 마운트 상태 추적
@@ -128,7 +128,7 @@ export default function LoginContainer() {
       );
 
       const token = await userCredential.user.getIdToken();
-      // setIsLoggedIn(true);
+      setIsLoggedIn(true);
 
       alert("로그인 성공!");
 

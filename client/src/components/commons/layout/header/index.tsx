@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-// import { useRecoilState, useRecoilValueLoadable } from "recoil";
+import { useRecoilState, useRecoilValueLoadable } from "recoil";
 import { loggedInCheck, marketinfoGlobal } from "../../../../commons/stores";
 import { auth } from "../../../../commons/libraries/firebase_fruitmap";
 import { browserSessionPersistence } from "firebase/auth";
@@ -23,7 +23,7 @@ import {
 export default function LayoutHeader() {
   // const router = useRouter();
 
-  // const [isLoggedIn, setIsLoggedIn] = useRecoilState(loggedInCheck);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loggedInCheck);
   // const marketinfo = useRecoilValueLoadable(marketinfoGlobal);
 
   const [isModalAlertOpen, setIsModalAlertOpen] = useState(false);
@@ -55,19 +55,19 @@ export default function LayoutHeader() {
   // };
 
   // 로그아웃 함수
-  // const onClickLogout = async () => {
-  //   try {
-  //     await auth.signOut();
-  //     await auth.setPersistence(browserSessionPersistence); // 로컬 로그인 해제
-  //     setIsLoggedIn(false); // 로그인 상태 초기화
-  //     setIsModalAlertOpen((prev) => !prev);
-  //     // router.reload(); // 화면 전체 새로고침
-  //     console.log(isLoggedIn);
-  //     // router.push("/fruitsmap");
-  //   } catch (error) {
-  //     alert("로그아웃에 실패했습니다.");
-  //   }
-  // };
+  const onClickLogout = async () => {
+    try {
+      await auth.signOut();
+      await auth.setPersistence(browserSessionPersistence); // 로컬 로그인 해제
+      setIsLoggedIn(false); // 로그인 상태 초기화
+      setIsModalAlertOpen((prev) => !prev);
+      // router.reload(); // 화면 전체 새로고침
+      console.log(isLoggedIn);
+      // router.push("/fruitsmap");
+    } catch (error) {
+      alert("로그아웃에 실패했습니다.");
+    }
+  };
 
   return (
     <Wrapper>
@@ -91,7 +91,7 @@ export default function LayoutHeader() {
               : "추천 과일을 찾는 중입니다."}
           </RecommendWrapper>
         )} */}
-        {/* 
+
         {isLoggedIn ? (
           <HeaderRightWrapper>
             <LogInCheckWrapper>
@@ -104,25 +104,24 @@ export default function LayoutHeader() {
             <LogInCheckWrapper as="a">로그인/회원가입</LogInCheckWrapper>
           </Link>
         )}
-          */}
       </CompWrapper>
 
       {isModalAlertOpen && (
         <ModalAlert
           open={isModalAlertOpen}
           onClose={onToggleAlertModal}
-          // onOk={onClickLogout}
+          onOk={onClickLogout}
           onCancel={onToggleAlertModal}
         >
           <span>로그아웃 하시겠습니까?</span>
         </ModalAlert>
       )}
 
-      {/* {!isLoggedIn && (
+      {!isLoggedIn && (
         <Link href="/fruitsmap" passHref>
           <a style={{ display: "none" }}></a>
         </Link>
-      )} */}
+      )}
     </Wrapper>
   );
 }
