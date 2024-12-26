@@ -4,27 +4,31 @@ import type { AppProps } from "next/app";
 import ApolloSetting from "../src/components/commons/layout/apollo";
 import { Global } from "@emotion/react";
 import { globalStyles } from "../src/commons/styles/globalStyles";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilState } from "recoil";
 import Layout from "../src/components/commons/layout";
+import { Auth } from "firebase/auth";
+// import { loggedInCheck } from "../src/commons/stores";
 
 export default function App({ Component, pageProps }: AppProps) {
+  // const [, setIsLoggedIn] = useRecoilState(loggedInCheck);
+
   return (
     <div>
-      <RecoilRoot>
-        {/* 이렇게 RecoilRoot로 전체를 감싸주면 글로벌 스테이트를 다들 공유할 수 있게 된다  */}
-        <ApolloSetting>
-          <>
-            <Global styles={globalStyles} />
+      {/* <RecoilRoot> */}
+      {/* 이렇게 RecoilRoot로 전체를 감싸주면 글로벌 스테이트를 다들 공유할 수 있게 된다  */}
+      <ApolloSetting>
+        <>
+          <Global styles={globalStyles} />
 
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
 
-            {/* // Component는 우리가 지금 보는 페이지 */}
-            {/* index.js에서 실행을 하면 html부분이 잘라내기 되어서 component부분으로 들어와서 실행이 된다 */}
-          </>
-        </ApolloSetting>
-      </RecoilRoot>
+          {/* // Component는 우리가 지금 보는 페이지 */}
+          {/* index.js에서 실행을 하면 html부분이 잘라내기 되어서 component부분으로 들어와서 실행이 된다 */}
+        </>
+      </ApolloSetting>
+      {/* </RecoilRoot> */}
     </div>
   );
 }

@@ -15,8 +15,8 @@ import {
 } from "../../../../commons/libraries/firebase_fruitmap";
 import OverlayContent from "./map.detail";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
-import { loggedInCheck } from "../../../../commons/stores";
+// import { useRecoilState } from "recoil";
+// import { loggedInCheck } from "../../../../commons/stores";
 import { MarketInfo } from "../register/register.types";
 
 declare const window: typeof globalThis & {
@@ -27,7 +27,7 @@ export default function MapIndexPage() {
   const router = useRouter();
 
   const [modalMessage, setModalMessage] = useState("");
-  const [logInCheck, setLogInCheck] = useRecoilState(loggedInCheck);
+  // const [logInCheck, setLogInCheck] = useRecoilState(loggedInCheck);
   const [isModalAlertOpen, setIsModalAlertOpen] = useState(false);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const [marketinfo, setMarketinfo] = useState<MarketInfo[]>([]);
@@ -187,11 +187,11 @@ export default function MapIndexPage() {
         ) : ( */}
         <>
           <MapWrapper id="map"></MapWrapper>
-          {logInCheck && (
-            <Link href="/fruitsmap/new" passHref>
-              <NewMarketButton as="a">가게 등록하기</NewMarketButton>
-            </Link>
-          )}
+          {/* {logInCheck && ( */}
+          <Link href="/fruitsmap/new" passHref>
+            <NewMarketButton as="a">가게 등록하기</NewMarketButton>
+          </Link>
+          {/* // )} */}
         </>
       </MainContentWrapper>
     </div>
