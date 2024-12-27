@@ -198,7 +198,7 @@ export default function MapIndexPage() {
     });
   }, [router.query]);
 
-  console.log(loading);
+  console.log("로딩중 :" + loading);
 
   return (
     <div>
