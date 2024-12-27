@@ -1,4 +1,13 @@
 import React, { MouseEvent } from "react";
+import {
+  MarketAddress,
+  MarketMenu,
+  MarketName,
+  OverlayCloseBtn,
+  OverlayImg,
+  OverlayMoveToDetail,
+  OverlayWrapper,
+} from "./map.style";
 
 interface OverlayContentProps {
   position: any;
@@ -17,26 +26,20 @@ export default function OverlayContent({
       : "/images/fruit.png";
 
   return (
-    <div
-      style={{
-        padding: "10px",
-        background: "white",
-        border: "1px solid #ccc",
-        position: "relative",
-        width: "220px",
-      }}
-    >
-      <img
+    <OverlayWrapper>
+      <OverlayImg
         src={imageUrl}
         alt="가게 이미지"
         style={{ width: "20px", height: "20px" }}
       />
-      <div>{position.name}</div>
-      <div style={{ fontSize: "14px", marginTop: "5px" }}>{position.menu}</div>
-      <div style={{ fontSize: "12px", marginTop: "5px" }}>
+      <MarketName>{position.name}</MarketName>
+      <MarketMenu style={{ fontSize: "14px", marginTop: "5px" }}>
+        {position.menu}
+      </MarketMenu>
+      <MarketAddress style={{ fontSize: "12px", marginTop: "5px" }}>
         {position.marketaddress}
-      </div>
-      <button
+      </MarketAddress>
+      <OverlayCloseBtn
         style={{
           position: "absolute",
           top: "10px",
@@ -48,10 +51,13 @@ export default function OverlayContent({
         onClick={onClose}
       >
         X
-      </button>
-      <div id={position.documentId} onClick={onClickMoveToDetail}>
+      </OverlayCloseBtn>
+      <OverlayMoveToDetail
+        id={position.documentId}
+        onClick={onClickMoveToDetail}
+      >
         상세 페이지로 이동
-      </div>
-    </div>
+      </OverlayMoveToDetail>
+    </OverlayWrapper>
   );
 }

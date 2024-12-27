@@ -84,3 +84,39 @@ export const NewMarketButton = styled.button`
 `;
 
 export const ModalAlert = styled(Modal)``;
+
+export const OverlayWrapper = styled.div`
+  padding: 10px;
+  background: white;
+  border: 1px solid #ccc;
+  position: relative;
+  width: 220px;
+`;
+
+export const OverlayImg = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+
+export const MarketName = styled.div``;
+
+export const MarketMenu = styled.div`
+  font-size: 14px;
+  margin-top: 5px;
+`;
+
+export const MarketAddress = styled.div`
+  font-size: 12px;
+  margin-top: 5px;
+`;
+
+export const OverlayCloseBtn = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  color: gray;
+  border: none;
+  cursor: pointer;
+`;
+
+export const OverlayMoveToDetail = styled.div``;

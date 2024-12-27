@@ -36,23 +36,10 @@ export default function MapIndexPage() {
     setIsModalAlertOpen((prev) => !prev);
   };
 
-  // const onClickMoveToDetail = (event: MouseEvent<HTMLDivElement>) => {
-  //   if (event.currentTarget instanceof HTMLDivElement) {
-  //     try {
-  //       router.push(`/fruitsmap/${event.currentTarget.id}`);
-  //     } catch (error) {
-  //       if (error instanceof Error) setModalMessage(error.message);
-  //       onToggleAlertModal();
-  //     }
-  //   }
-  // };
-
+  // 문제가 생긴 코드드
   const onClickMoveToDetail = (event: MouseEvent<HTMLDivElement>) => {
     if (event.currentTarget instanceof HTMLDivElement) {
       try {
-        if (!event.currentTarget.id)
-          throw new Error("상세 페이지로 이동할 수 없습니다.");
-
         router.push(`/fruitsmap/${event.currentTarget.id}`);
       } catch (error) {
         if (error instanceof Error) setModalMessage(error.message);
@@ -60,6 +47,21 @@ export default function MapIndexPage() {
       }
     }
   };
+
+  // 이게 진짜 코드
+  // const onClickMoveToDetail = (event: MouseEvent<HTMLDivElement>) => {
+  //   if (event.currentTarget instanceof HTMLDivElement) {
+  //     try {
+  //       if (!event.currentTarget.id)
+  //         throw new Error("상세 페이지로 이동할 수 없습니다.");
+
+  //       router.push(`/fruitsmap/${event.currentTarget.id}`);
+  //     } catch (error) {
+  //       if (error instanceof Error) setModalMessage(error.message);
+  //       onToggleAlertModal();
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     // 비동기 작업 완료 후 상태 업데이트
