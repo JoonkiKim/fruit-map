@@ -125,7 +125,7 @@ export default function MapIndexPage() {
       const script = document.createElement("script");
       script.src =
         "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=1959f4231719c25f68b4c5b5443d7c37&libraries=services";
-      // script.async = true;
+      script.async = true;
 
       document.head.appendChild(script);
       script.onload = () => {
