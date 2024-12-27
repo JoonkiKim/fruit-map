@@ -69,6 +69,7 @@ export default function MapIndexPage() {
       try {
         const user = await auth.currentUser; // Firebase 현재 사용자 가져오기
         setIsLoggedIn(!!user); // 사용자 존재 여부를 상태로 설정
+        console.log("맵에서 전하는 로그인 여부" + isLoggedIn);
       } catch (error) {
         console.error("Error checking login state:", error);
       }
@@ -86,7 +87,7 @@ export default function MapIndexPage() {
   //   router.push("/fruitsmap/new"); // 가게 등록 페이지로 이동
   // };
 
-  const user = auth?.currentUser;
+  // const user = auth?.currentUser;
   console.log("로그인 여부는" + isLoggedIn);
 
   useEffect(() => {
