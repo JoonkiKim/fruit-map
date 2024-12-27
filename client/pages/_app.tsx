@@ -8,8 +8,6 @@ import { RecoilRoot } from "recoil";
 import Layout from "../src/components/commons/layout";
 
 export default function App({ Component, pageProps }: AppProps) {
-  // const [, setIsLoggedIn] = useRecoilState(loggedInCheck);
-
   return (
     <div>
       <RecoilRoot>

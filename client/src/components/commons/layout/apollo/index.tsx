@@ -60,7 +60,7 @@ export default function ApolloSetting(props: IApolloSettingProps) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        console.log("리코일 초기화 롤백 테스트입니다");
+        console.log("authlink uploadlink의 헤더 기본값 없애보기 테스트입니다");
         console.log("auth로딩됨" + JSON.stringify(user));
         const token = await user.getIdToken();
         setAccessToken(token);
@@ -88,8 +88,25 @@ export default function ApolloSetting(props: IApolloSettingProps) {
     return () => unsubscribe();
   }, [logInCheck, accessToken]);
 
+  // 초기화를 잘 해준 코드드
+  // const uploadLink = createUploadLink({
+  //   headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+  //   credentials: "include",
+  // });
+
+  // const authLink = setContext(async (_, { headers }) => {
+  //   const token = await auth.currentUser?.getIdToken(); // Firebase에서 최신 토큰 가져오기
+  //   return {
+  //     headers: {
+  //       ...headers,
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //   };
+  // });
+
+  // 기본값 설정을 없앤 실험코드
   const uploadLink = createUploadLink({
-    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+    headers: { Authorization: `Bearer ${accessToken}` },
     credentials: "include",
   });
 
@@ -98,7 +115,7 @@ export default function ApolloSetting(props: IApolloSettingProps) {
     return {
       headers: {
         ...headers,
-        Authorization: token ? `Bearer ${token}` : "",
+        Authorization: `Bearer ${token}`,
       },
     };
   });
