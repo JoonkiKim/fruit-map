@@ -100,6 +100,7 @@ export default function FruitsRegisterComponentPage(
   const [lng, setLng] = useState(0);
   const [uuid, setUuid] = useState(uuidv4());
   const [fileUrls, setFileUrls] = useState(["", "", ""]); // 이미지 상태 초기화
+  // const [prevfileUrls, setPrevFileUrls] = useState(["", "", ""]);
   const [loading, setLoading] = useState(true);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -157,6 +158,7 @@ export default function FruitsRegisterComponentPage(
     setLng(0);
     setUuid("");
     setFileUrls(["", "", ""]);
+    // setPrevFileUrls(["", "", ""]);
     router.push(`/fruitsmap`);
   };
 
@@ -250,6 +252,7 @@ export default function FruitsRegisterComponentPage(
     const newFileUrls = [...fileUrls];
     newFileUrls[index] = fileUrl;
     setFileUrls(newFileUrls);
+    // setPrevFileUrls(newFileUrls);
 
     setValue("imageUrl", newFileUrls);
   };

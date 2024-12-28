@@ -2,6 +2,7 @@ import {
   EmailWrapper,
   LoginBtn,
   LoginErrorMsg,
+  LoginErrorMsgNone,
   LoginInput,
   LoginTitleWrapper,
   LoginWrapper,
@@ -53,7 +54,6 @@ export default function LoginContainer() {
     resolver: yupResolver(schema),
     mode: "onSubmit",
   });
-  // const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [, setIsLoggedIn] = useRecoilState(loggedInCheck);
   const [stayLoggedIn, setStayLoggedIn] = useState(false); // 로그인 상태 유지 여부
   const [loading, setLoading] = useState(false); // 로딩 상태 추가
@@ -70,46 +70,6 @@ export default function LoginContainer() {
   const toggleStayLoggedIn = () => {
     setStayLoggedIn((prev) => !prev);
   };
-
-  // useEffect(() => {
-  //   // 특정 경로의 페이지를 미리 가져옵니다.
-  //   router.prefetch("/fruitsmap");
-  //   router.prefetch("/signUp");
-  // }, [router]);
-
-  // const onClickLogin = async (data: IFormData) => {
-  //   try {
-  //     setLoading(true); // 로딩 상태 시작
-  //     const persistence = stayLoggedIn
-  //       ? browserLocalPersistence // 브라우저 닫아도 유지
-  //       : browserSessionPersistence; // 브라우저 닫으면 로그아웃
-
-  //     await setPersistence(auth, persistence);
-
-  //     const userCredential = await signInWithEmailAndPassword(
-  //       auth,
-  //       data.email,
-  //       data.password
-  //     );
-
-  //     const token = await userCredential.user.getIdToken();
-  //     // setAccessToken(token); // Recoil 상태에 저장
-
-  //     setIsLoggedIn(true);
-  //     alert("로그인 성공!");
-
-  //     if (!router.isReady) {
-  //       console.warn("라우터가 준비되지 않았습니다. 대기 중...");
-  //       await new Promise((resolve) => setTimeout(resolve, 500)); // 라우터 준비 대기
-  //     }
-
-  //     await router.push("/fruitsmap");
-  //   } catch (error) {
-  //     if (error instanceof Error) alert(error.message);
-  //   } finally {
-  //     setLoading(false); // 로딩 상태 종료
-  //   }
-  // };
 
   const onClickLogin = async (data: IFormData) => {
     try {
@@ -161,7 +121,11 @@ export default function LoginContainer() {
               {...register("email")}
               placeholder="이메일을 입력해주세요"
             />
-            <LoginErrorMsg>{formState.errors.email?.message}</LoginErrorMsg>
+            {formState.errors.email?.message ? (
+              <LoginErrorMsg>{formState.errors.email?.message}</LoginErrorMsg>
+            ) : (
+              <LoginErrorMsgNone></LoginErrorMsgNone>
+            )}
           </EmailWrapper>
           <PasswordWrapper>
             <LoginInput
@@ -169,7 +133,13 @@ export default function LoginContainer() {
               {...register("password")}
               placeholder="비밀번호를 입력해주세요"
             />
-            <LoginErrorMsg>{formState.errors.password?.message}</LoginErrorMsg>
+            {formState.errors.password?.message ? (
+              <LoginErrorMsg>
+                {formState.errors.password?.message}
+              </LoginErrorMsg>
+            ) : (
+              <LoginErrorMsgNone></LoginErrorMsgNone>
+            )}
           </PasswordWrapper>
 
           <StayLoginWrapper>

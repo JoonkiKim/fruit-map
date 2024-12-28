@@ -1,8 +1,8 @@
 // import { useRouter } from "next/router";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValueLoadable } from "recoil";
+import { useState } from "react";
+import { useRecoilState } from "recoil";
 import { loggedInCheck, marketinfoGlobal } from "../../../../commons/stores";
 import { auth } from "../../../../commons/libraries/firebase_fruitmap";
 import { browserSessionPersistence } from "firebase/auth";
@@ -16,6 +16,7 @@ import {
   LogoTxt,
   LogOutWrapper,
   LogoWrapper,
+  MoveToMypageWrapper,
   RecommendWrapper,
   Wrapper,
 } from "../../../units/headercomp/header.style";
@@ -97,7 +98,12 @@ export default function LayoutHeader() {
             <LogInCheckWrapper>
               {auth?.currentUser?.displayName}님 환영합니다!
             </LogInCheckWrapper>
-            <LogOutWrapper onClick={onToggleAlertModal}>로그아웃</LogOutWrapper>
+
+            <Link href="/login" passHref>
+              <MoveToMypageWrapper as="a">
+                마이페이지로 이동하기
+              </MoveToMypageWrapper>
+            </Link>
           </HeaderRightWrapper>
         ) : (
           <Link href="/login" passHref>

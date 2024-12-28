@@ -83,3 +83,15 @@ export const LogOutWrapper = styled.div`
     cursor: pointer;
   }
 `;
+
+export const MoveToMypageWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  /* color: #dbdbdb; */
+  text-decoration: underline;
+  &:hover {
+    cursor: pointer;
+  }
+`;

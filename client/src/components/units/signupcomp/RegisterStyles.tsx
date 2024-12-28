@@ -28,7 +28,7 @@ export const RegisterInput = styled.input`
   width: 384px;
   height: 64px;
   margin-bottom: 5px;
-  border-radius: 20px;
+  border-radius: 5px;
   padding-left: 10px;
 `;
 
@@ -48,7 +48,7 @@ export const RegisterBtn = styled.button`
   margin-top: 20px;
   width: 384px;
   height: 64px;
-  border-radius: 20px;
+  border-radius: 5px;
   &:hover {
     cursor: pointer;
   }

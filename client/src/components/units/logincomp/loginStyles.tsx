@@ -2,8 +2,8 @@ import { CheckCircleFilled, CheckCircleOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
 
 export const LoginWrapper = styled.div`
+  margin-top: 100px;
   width: 384px;
-  /* background-color: blue; */
   border: none;
 `;
 
@@ -17,23 +17,44 @@ export const LoginTitleWrapper = styled.div`
 
 export const EmailWrapper = styled.div`
   width: 384px;
+
+  /* background-color: blue; */
   margin-bottom: 20px;
 `;
 
 export const LoginInput = styled.input`
+  /* margin-bottom: 20px; */
+
   width: 384px;
   height: 64px;
-  border-radius: 20px;
-  padding-left: 10px;
+  border-radius: 5px;
+  /* margin-bottom: 20px; */
+  /* border: 1px solid #bdbdbd; */
+  &::placeholder {
+    color: #bdbdbd; /* 원하는 색상으로 변경 */
+    font-size: 16px; /* 원하는 크기로 변경 */
+    padding-left: 5px;
+  }
 `;
 
 export const LoginErrorMsg = styled.div`
   width: 384px;
   color: red;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 400;
   margin-left: 20px;
-  margin-top: 10px;
+
+  /* margin-top: 20px; */
+`;
+
+export const LoginErrorMsgNone = styled.div`
+  width: 384px;
+  height: 16px;
+  color: red;
+  /* font-size: 13px; */
+  font-weight: 400;
+  margin-left: 20px;
+  /* margin-top: 13px; */
 `;
 
 export const PasswordWrapper = styled.div`
@@ -45,6 +66,7 @@ export const StayLoginWrapper = styled.div`
   width: 384px;
   display: flex;
   flex-direction: row;
+  /* margin-top: 20px; */
   margin-bottom: 20px;
 `;
 
@@ -76,7 +98,7 @@ export const StayLoginFilledIcon = styled(CheckCircleFilled)`
 export const LoginBtn = styled.button`
   width: 384px;
   height: 64px;
-  border-radius: 20px;
+  border-radius: 5px;
   &:hover {
     cursor: pointer;
   }
