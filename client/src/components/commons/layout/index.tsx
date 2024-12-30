@@ -8,6 +8,7 @@ const HIDDEN_HEADERS = [
   "/fruitsmap/[marketId]/edit", // 동적 경로 편집 페이지
   "/login",
   "/signUp",
+  "/fruitsmap/mypage",
 ];
 
 interface ILayoutProps {

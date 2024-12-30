@@ -74,25 +74,15 @@ export const HeaderRightWrapper = styled.div`
   align-items: center;
 `;
 
-export const LogOutWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  color: #dbdbdb;
-  text-decoration: underline;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
 export const MoveToMypageWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  /* color: #dbdbdb; */
-  text-decoration: underline;
+
+  color: #dbdbdb;
+
+  /* text-decoration-line: none; */
   &:hover {
     cursor: pointer;
   }

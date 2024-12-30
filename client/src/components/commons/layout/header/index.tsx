@@ -14,7 +14,6 @@ import {
   LogInCheckWrapper,
   LogoImg,
   LogoTxt,
-  LogOutWrapper,
   LogoWrapper,
   MoveToMypageWrapper,
   RecommendWrapper,
@@ -41,34 +40,6 @@ export default function LayoutHeader() {
       setRandomIndex(Math.floor(Math.random() * marketinfo.contents.length));
     }
   }, [marketinfo]);
-
-  // useEffect(() => {
-  //   // 특정 경로의 페이지를 미리 가져옵니다.
-  //   router.prefetch("/fruitsmap");
-  //   router.prefetch("/login");
-  // }, [router]);
-  // const onLogoClick = () => {
-  //   router.push("/fruitsmap");
-  // };
-
-  // const onClickMovetoLogin = () => {
-  //   router.push("/login");
-  // };
-
-  // 로그아웃 함수
-  const onClickLogout = async () => {
-    try {
-      await auth.signOut();
-      await auth.setPersistence(browserSessionPersistence); // 로컬 로그인 해제
-      setIsLoggedIn(false); // 로그인 상태 초기화
-      setIsModalAlertOpen((prev) => !prev);
-      // router.reload(); // 화면 전체 새로고침
-      console.log(isLoggedIn);
-      // router.push("/fruitsmap");
-    } catch (error) {
-      alert("로그아웃에 실패했습니다.");
-    }
-  };
 
   return (
     <Wrapper>
@@ -116,17 +87,6 @@ export default function LayoutHeader() {
           </Link>
         )}
       </CompWrapper>
-
-      {isModalAlertOpen && (
-        <ModalAlert
-          open={isModalAlertOpen}
-          onClose={onToggleAlertModal}
-          onOk={onClickLogout}
-          onCancel={onToggleAlertModal}
-        >
-          <span>로그아웃 하시겠습니까?</span>
-        </ModalAlert>
-      )}
 
       {!isLoggedIn && (
         <Link href="/fruitsmap" passHref>
