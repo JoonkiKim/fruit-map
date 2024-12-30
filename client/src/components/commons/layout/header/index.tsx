@@ -1,12 +1,12 @@
 // import { useRouter } from "next/router";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValueLoadable } from "recoil";
-import { loggedInCheck, marketinfoGlobal } from "../../../../commons/stores";
+import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { loggedInCheck } from "../../../../commons/stores";
 import { auth } from "../../../../commons/libraries/firebase_fruitmap";
-import { browserSessionPersistence } from "firebase/auth";
-import { ModalAlert } from "../../../units/fruitsmap/map/map.style";
+// import { browserSessionPersistence } from "firebase/auth";
+// import { ModalAlert } from "../../../units/fruitsmap/map/map.style";
 
 import {
   CompWrapper,
@@ -24,7 +24,7 @@ export default function LayoutHeader() {
   // const router = useRouter();
 
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loggedInCheck);
-  const marketinfo = useRecoilValueLoadable(marketinfoGlobal);
+  // const marketinfo = useRecoilValueLoadable(marketinfoGlobal);
 
   const [isModalAlertOpen, setIsModalAlertOpen] = useState(false);
 
@@ -34,12 +34,12 @@ export default function LayoutHeader() {
 
   const [randomIndex, setRandomIndex] = useState<number>(0); // 초기 값 설정
 
-  useEffect(() => {
-    if (marketinfo.state === "hasValue" && marketinfo.contents.length > 0) {
-      // 클라이언트에서만 랜덤 인덱스를 설정
-      setRandomIndex(Math.floor(Math.random() * marketinfo.contents.length));
-    }
-  }, [marketinfo]);
+  // useEffect(() => {
+  //   if (marketinfo.state === "hasValue" && marketinfo.contents.length > 0) {
+  //     // 클라이언트에서만 랜덤 인덱스를 설정
+  //     setRandomIndex(Math.floor(Math.random() * marketinfo.contents.length));
+  //   }
+  // }, [marketinfo]);
 
   return (
     <Wrapper>
@@ -56,13 +56,13 @@ export default function LayoutHeader() {
 
         {isLoggedIn ? (
           <>
-            <RecommendWrapper>
+            {/* <RecommendWrapper>
               {marketinfo.state === "hasValue" && marketinfo.contents.length > 0
                 ? randomIndex !== null
                   ? `오늘은 ${marketinfo.contents[randomIndex]?.name} ${marketinfo.contents[randomIndex]?.menu} 어때요?`
                   : "추천 과일을 찾는 중입니다."
                 : "추천 과일을 찾는 중입니다."}
-            </RecommendWrapper>
+            </RecommendWrapper> */}
             <HeaderRightWrapper>
               <LogInCheckWrapper>
                 {auth?.currentUser?.displayName}님 환영합니다!
@@ -77,13 +77,7 @@ export default function LayoutHeader() {
           </>
         ) : (
           <Link href="/login" passHref>
-            <LogInCheckWrapper as="a">
-              {marketinfo.state === "hasValue" && marketinfo.contents.length > 0
-                ? randomIndex !== null
-                  ? "로그인 / 회원가입"
-                  : "유저 검색 중"
-                : "유저 검색 중"}
-            </LogInCheckWrapper>
+            <LogInCheckWrapper as="a">로그인 / 회원가입</LogInCheckWrapper>
           </Link>
         )}
       </CompWrapper>
