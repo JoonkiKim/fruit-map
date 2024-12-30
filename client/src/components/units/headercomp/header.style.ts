@@ -63,6 +63,8 @@ export const RecommendWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  /* background-color: green; */
+  margin-right: 30px;
 `;
 
 export const HeaderRightWrapper = styled.div`

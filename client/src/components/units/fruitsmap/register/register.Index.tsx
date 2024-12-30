@@ -100,7 +100,7 @@ export default function FruitsRegisterComponentPage(
   const [lng, setLng] = useState(0);
   const [uuid, setUuid] = useState(uuidv4());
   const [fileUrls, setFileUrls] = useState(["", "", ""]); // 이미지 상태 초기화
-  // const [prevfileUrls, setPrevFileUrls] = useState(["", "", ""]);
+  const [prevfileUrls, setPrevFileUrls] = useState(["", "", ""]);
   const [loading, setLoading] = useState(true);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -162,49 +162,6 @@ export default function FruitsRegisterComponentPage(
     router.push(`/fruitsmap`);
   };
 
-  // const handleComplete = (data: Address) => {
-  //   // console.log(data);
-  //   setAddressData(data);
-  //   onToggleModal();
-  //   setValue("marketaddress", data.address);
-  //   setValue("marketaddresszonecode", data.zonecode);
-  //   if (!window.kakao || !window.kakao.maps) {
-  //     throw new Error("Kakao Maps SDK not loaded.");
-  //   }
-
-  //   // 주소의 handleComplete안에 카카오태그 불러오는 것까지 다 하는거다
-  //   // 카카오 지도 스크립트 추가
-  //   const script = document.createElement("script");
-  //   script.src = script.src =
-  //     "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=1959f4231719c25f68b4c5b5443d7c37&libraries=services";
-
-  //   document.head.appendChild(script);
-
-  //   script.onload = () => {
-  //     window.kakao.maps.load(() => {
-  //       const geocoder = new window.kakao.maps.services.Geocoder();
-
-  //       geocoder.addressSearch(
-  //         data.address,
-  //         function (result: any, status: any) {
-  //           if (status === window.kakao.maps.services.Status.OK) {
-  //             const latresult = result[0].y; // 위도
-  //             const lngresult = result[0].x; // 경도
-
-  //             setLat(latresult);
-  //             setLng(lngresult);
-  //           }
-  //         }
-  //       );
-  //     });
-  //   };
-
-  //   // console.log(lat);
-  //   // console.log(lng);
-  // };
-
-  // 영업시간 put 입력 함수
-
   const handleComplete = (data: Address) => {
     try {
       setAddressData(data);
@@ -234,6 +191,8 @@ export default function FruitsRegisterComponentPage(
     }
   };
 
+  // 영업시간 put 입력 함수
+
   const handleTimeChange = (value: any) => {
     if (value && value.length === 2) {
       const [start, end] = value;
@@ -252,9 +211,15 @@ export default function FruitsRegisterComponentPage(
     const newFileUrls = [...fileUrls];
     newFileUrls[index] = fileUrl;
     setFileUrls(newFileUrls);
-    // setPrevFileUrls(newFileUrls);
 
+    setPrevFileUrls(newFileUrls);
     setValue("imageUrl", newFileUrls);
+    console.log("진짜 파일 url" + fileUrls);
+  };
+
+  const onChangePreviewFileUrls = (fileUrl: string, index: number): void => {
+    const newFileUrls = [...prevfileUrls];
+    prevfileUrls[index] = fileUrl;
   };
 
   // 로고 클릭시 메인 지도 페이지로 이동
@@ -609,12 +574,13 @@ export default function FruitsRegisterComponentPage(
 
               <ImageWrapper>
                 {" "}
-                {fileUrls.map((el, index) => (
+                {prevfileUrls.map((el, index) => (
                   <UploadsFruitsMarket
                     key={uuidv4()}
                     index={index}
                     fileUrl={el}
                     onChangeFileUrls={onChangeFileUrls}
+                    onChangePreviewFileUrls={onChangePreviewFileUrls}
                     uuid={uuid}
                   />
                 ))}

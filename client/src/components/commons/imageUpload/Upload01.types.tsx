@@ -7,13 +7,14 @@ export interface IUploads01Props {
   defaultFileUrl?: string;
   onChangeFileUrls: (fileUrl: string, index: number) => void;
   uuid: string;
+  onChangePreviewFileUrls: (fileUrl: string, index: number) => void;
 }
 
 export interface IUploads01UIProps {
   fileRef: RefObject<HTMLInputElement>;
   fileUrl: string;
   // previewImageUrl: string;
-  defaultFileUrl?: string;
+
   onClickUpload: (e: React.MouseEvent) => void;
   onChangeFile: (event: ChangeEvent<HTMLInputElement>) => void;
 }

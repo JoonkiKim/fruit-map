@@ -11,14 +11,14 @@ import { storage } from "../../../commons/libraries/firebase_fruitmap";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function UploadsFruitsMarket(props: IUploads01Props) {
-  const fileRef = useRef<HTMLInputElement>(undefined);
+  const fileRef = useRef<HTMLInputElement>();
 
   const onClickUpload = (e: React.MouseEvent): void => {
     e.preventDefault();
     fileRef.current?.click();
   };
 
-  // 파이어베이스 스토리지 업로드드
+  // 파이어베이스 스토리지 업로드
   const uploadFileToFirebaseStorage = async (file, uuid) => {
     const storageRef = ref(storage, `images/${uuid}/${file.name}`);
     const snapshot = await uploadBytes(storageRef, file);
@@ -36,19 +36,21 @@ export default function UploadsFruitsMarket(props: IUploads01Props) {
     if (!isValid) return;
 
     try {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = (event) => {
+        console.log(event.target?.result);
+        if (typeof event.target?.result === "string") {
+          // setImageUrl을 통해 미리보기 이미지를 보여주고
+          // 실제로 보낼 이미지(event.target.files?.[0];)는 setFile을 통해 스테이트에 넣어주자
+          props.onChangePreviewFileUrls(
+            event.target?.result ?? "",
+            props.index
+          );
+        }
+      };
       const downloadURL = await uploadFileToFirebaseStorage(file, props.uuid);
-
       props.onChangeFileUrls(downloadURL, props.index);
-
-      // const fileReader = new FileReader();
-      // fileReader.readAsDataURL(file);
-      // fileReader.onload = (event) => {
-      //   if (typeof event.target?.result === "string")
-      //     props.setPreviewImageUrl(event.target?.result ?? "");
-      //   console.log(event.target?.result);
-      // };
-      // 화면에 보이는 미리보기 이미지 URL을 생성했으니까 setImageUrl을 통해 주소를 넣어주고 img태그에 imgUrl스테이트를 넣어주면 미리보기 생성완!
-      // };
     } catch (error) {
       if (error instanceof Error) Modal.error({ content: error.message });
     }
@@ -58,8 +60,6 @@ export default function UploadsFruitsMarket(props: IUploads01Props) {
     <Uploads01UI
       fileRef={fileRef}
       fileUrl={props.fileUrl}
-      // previewImageUrl={props.previewImageUrl}
-      defaultFileUrl={props.defaultFileUrl}
       onClickUpload={onClickUpload}
       onChangeFile={onChangeFile}
     />

@@ -11,6 +11,7 @@ export default function MyPageComponent() {
   return (
     <>
       <div>
+        마이페이지 입니다
         <LogOutWrapper onClick={onToggleAlertModal}>로그아웃</LogOutWrapper>
       </div>
     </>
