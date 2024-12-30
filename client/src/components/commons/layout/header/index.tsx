@@ -33,6 +33,7 @@ export default function LayoutHeader() {
   };
 
   const [randomIndex, setRandomIndex] = useState<number>(0); // 초기 값 설정
+  console.log("테스트를 위해 모두 되돌림");
 
   // useEffect(() => {
   //   if (marketinfo.state === "hasValue" && marketinfo.contents.length > 0) {
